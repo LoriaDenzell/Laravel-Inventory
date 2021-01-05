@@ -1,0 +1,34 @@
+Inventory Management System
+
+BUGS:
+
+1. Fix toastrs
+2. Failed form submissions must return with old inputs 
+3. Edit Sales - Cannot change product
+
+//////////////////////////////////////////////// 
+
+FEATURES:
+	
+1. Export CSV in options for all list (admin only)
+2. ADD SALE PER UNIT (DATABASE, MODEL, CONTROLLER, CRUD)
+3. PRODUCT - Purchase price should be sales per unit total
+4. ADD CMS (DATABASE, MODEL, CONTROLLER, CRUD)
+	- Company Name
+	- Phone Number 
+	- company email address
+	- company address
+	- percentage setup conditions (low, acceptable, high)
+	- Products or categories to exclude in charts
+	- activity log record limits
+	
+5. Cron jobs
+
+/////////////////// year 2021 implementation /////////////////////////
+	
+7. Area Chart (DASHBOARD)
+	- Fix calculation for up/down rates: 
+		- TOTAL REVENUE
+		- TOTAL EXPENSE
+		- TOTAL PROFIT 
+		- TOTAL CUSTOMERS SERVED
