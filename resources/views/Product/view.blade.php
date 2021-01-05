@@ -38,27 +38,27 @@
                 @csrf
                 <div class="card-body">
                   <!-- IMAGES -->
-                  @if($data->product_image)
-                  <div class="form-group row">
-                    <div class="col-md-6 mx-auto">
-                      <div class="card card-info">
-                        <div class="card-header ">
-                          <h3 class="card-title text-center "><strong><i class="fas fa-image"></i></strong> Product Image</h3>
-                        </div>
-                        <div class = "form-group row">
-                          <div class="col-md-6">
-                            <div class = "col-sm-6 mx-auto">
-                              <img src = "{{asset('/storage/images/'.$data->product_image)}}" 
-                                  alt = "img_product"
-                                  height = "450"
-                                  width = "390"
-                                  />
+                  @if($data->product_image != NULL)
+                    <div class="form-group row">
+                      <div class="col-md-6 mx-auto">
+                        <div class="card card-info">
+                          <div class="card-header ">
+                            <h3 class="card-title text-center "><strong><i class="fas fa-image"></i></strong> Product Image</h3>
+                          </div>
+                          <div class = "form-group row">
+                            <div class="col-md-6">
+                              <div class = "col-sm-6 mx-auto">
+                                <img src = "{{asset('/storage/images/'.$data->product_image)}}" 
+                                    alt = "img_product"
+                                    height = "450"
+                                    width = "390"
+                                    />
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
                     </div>
-                  </div>
                   @endif
 
                   <div class="form-group row">
