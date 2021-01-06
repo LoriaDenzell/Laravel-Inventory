@@ -16,7 +16,7 @@ use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Validator;
 use Redirect;
 use Auth;
-use Str;
+use Str; 
 use Carbon;
 use DB;
 
@@ -45,7 +45,6 @@ class SaleController extends Controller
         if($validator->fails()){
             
             Toastr::warning('Invoice No. cannot be repeated or blank.', 'Warning');
-            //return redirect()->back()->withInput()->withErrors($validator->messages()->all());
             return redirect()->back()->withInput($request->all);
         }
 
@@ -69,7 +68,7 @@ class SaleController extends Controller
         $data = new SalesH();
         $data->date = date('Y-m-d', strtotime($request->date));
         $data->invoice_no = $request->invoice_no;
-        $data->shop_name = Str::upper($request->shop_name);
+        $data->shop_name = $request->shop_name == "" ? "N/A" : Str::upper($request->shop_name);
         $data->information = $request->product_information;
         $data->active = 1;
         $data->user_modified = Auth::user()->id; 

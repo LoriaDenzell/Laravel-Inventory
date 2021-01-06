@@ -50,7 +50,7 @@ class HomeController extends Controller
             $dateQuery = date('Y-m-d');
             $yesterday = date('Y-m-d', strtotime('-1 day', strtotime($dateQuery)));
         }
-
+        
         //==========================================================================
         //DAILY OPERATIONS SUMMARY REPORT
         //==========================================================================

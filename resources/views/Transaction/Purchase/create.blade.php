@@ -117,8 +117,9 @@
                                     class="form-control" 
                                     id="name_raw_product_1" 
                                     name = "name_raw_product[]" 
-                                    placeholder = "Product Name" 
                                     autocomplete = "off"
+                                    style="text-transform: uppercase"
+                                    placeholder = "Product Name" 
                                     required>
                         </div>
                         <div class="col-sm-3">
@@ -174,8 +175,8 @@
             X++;
             $(wrapper).append(' <div class = "form-group row"> ' +
                     '<div class="col-sm-3">' +
-                        '<input type="hidden" class="form-control" id="id_raw_product_'+X+'" name = "id_raw_product[]" placeholder = "Product Name" required>' +
-                        '<input type="text" class="form-control" id="name_raw_product_'+X+'" name = "name_raw_product[]" placeholder = "Product Name" required>'+
+                        '<input type="hidden" class="form-control" id="id_raw_product_'+X+'" name = "id_raw_product[]" required>' +
+                        '<input type="text" class="form-control" id="name_raw_product_'+X+'" name = "name_raw_product[]" style="text-transform: uppercase" placeholder = "Product Name" required>'+
                     '</div>' +
                     '<div class="col-sm-3">' +
                         '<input type="number" class="form-control" id="price_'+X+'" name = "price[]" placeholder = "Product Price" onkeyup="this.value=this.value.replace(/[\d]/, '+0+')" required>' +

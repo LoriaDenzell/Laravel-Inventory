@@ -49,7 +49,7 @@ class PurchaseController extends Controller
         $data->date = date('Y-m-d', strtotime($request->date));
         $data->no_invoice = $request->no_invoice;
         $data->information = $request->product_information;
-        $data->status =  $request->purchase_status;
+        $data->status = $request->purchase_status;
         $data->active = 1;
         $data->user_modified = Auth::user()->id; 
 
@@ -63,7 +63,7 @@ class PurchaseController extends Controller
 
                     $detail = new PurchaseD();
                     $detail->id_purchase = $data->id;
-                    $detail->product_name = $name_raw_product;
+                    $detail->product_name = Str::upper($name_raw_product);
                     $detail->price = $_POST['price'][$key];
                     $total = $total + $detail->price;
 

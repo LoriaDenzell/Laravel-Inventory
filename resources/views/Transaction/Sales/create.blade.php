@@ -95,7 +95,7 @@
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <label for="shop_name" class="col-sm-6 col-form-label">Customer Name <font color="red">*</font></label>
+                        <label for="shop_name" class="col-sm-6 col-form-label">Customer Name</label>
                         <div class="input-group mb-2">
                             <div class="input-group-prepend {{$errors->has('shop_name') ? 'has-error' : ''}}">
                                 <span class="input-group-text"><i class="fas fa-user-check"></i></span>
@@ -107,8 +107,7 @@
                                     placeholder = "Customer Name" 
                                     autocomplete = "on"
                                     value="{{ old('shop_name') }}"
-                                    style="text-transform: uppercase"
-                                    required>
+                                    style="text-transform: uppercase">
                             </div>
                         </div>
                     </div>
