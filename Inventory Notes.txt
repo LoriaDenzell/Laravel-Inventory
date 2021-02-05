@@ -2,33 +2,37 @@ Inventory Management System
 
 BUGS:
 
-1. Fix toastrs
-2. Failed form submissions must return with old inputs 
-3. Edit Sales - Cannot change product
+1. Failed form submissions are not returning old inputs
+2. Toastr does not work when redirecting (using routes) 
 
-//////////////////////////////////////////////// 
+1. Fix all Toastr into new function and messages
 
-FEATURES:
-	
-1. Export CSV in options for all list (admin only)
-2. ADD SALE PER UNIT (DATABASE, MODEL, CONTROLLER, CRUD)
-3. PRODUCT - Purchase price should be sales per unit total
-4. ADD CMS (DATABASE, MODEL, CONTROLLER, CRUD)
-	- Company Name
-	- Phone Number 
-	- company email address
-	- company address
-	- percentage setup conditions (low, acceptable, high)
-	- Products or categories to exclude in charts
-	- activity log record limits
-	
-5. Cron jobs
+==================================================================================================================
 
-/////////////////// year 2021 implementation /////////////////////////
-	
-7. Area Chart (DASHBOARD)
-	- Fix calculation for up/down rates: 
-		- TOTAL REVENUE
-		- TOTAL EXPENSE
-		- TOTAL PROFIT 
-		- TOTAL CUSTOMERS SERVED
+SYSTEM CHANGES: 
+
+UserController index - Added query for active and inactive users
+Added Content (CMS) migration, model, routes and controller
+Added Addons migration, model, routes and controller
+HomeController added content (CMS) in RecentActivities()
+Added Content (CMS) and Product Addons in sidebar and changed some icons of other sidebar items
+Fixed user activities descending order 
+Added content retrieval in SaleController Show
+Fixed Edit/update UI for Sales Order
+Added CSV Export option for admin user type only (product, purchase and sales)
+Added record limit of every table depends on the CMS configuration. Default 1000 records if not set yet.
+Added Bulk Deactivate and Reactivate feature for Sales Orders, Purchase Orders, Categories, Products, Addons
+Fixed Customer's Orders Quantity in Sales Summary Page
+Create Forms in Modal Boxes from pages for Addons, Category, User, Products, Purchase & Sales
+Fixed Percentages Calculator
+Added Calendar Feature Overview (Temporary/To be finalized)
+
+CREDENTIALS: 
+
+infinityfree
+
+username: beaboyco@gmail.com
+pw: boyco10496
+
+username: epiz_27653280
+db: epiz_27653280_inventory

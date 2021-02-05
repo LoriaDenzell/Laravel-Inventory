@@ -21,7 +21,7 @@ class CreateSalesHTable extends Migration
                 $table->integer('total')->nullable();
                 $table->integer('active');
                 $table->integer('user_modified');
-                $table->string('shop_name');
+                $table->string('customer');
                 $table->string('information')->nullable();
                 $table->timestamps();
             });

@@ -3,6 +3,7 @@
 return [
     // Limit the number of displayed toasts, by default no limits
     'maxItems' => null,
+    'session_name' => 'toastr',
     
     'options' => [
         'closeButton'       => true,

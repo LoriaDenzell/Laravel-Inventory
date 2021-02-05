@@ -2,79 +2,69 @@
 
 namespace App\Http\Controllers\Master;
 
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Storage;
+use Spatie\Activitylog\Models\Activity;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Controller;
-use App\Model\Master\Product;
-use Illuminate\Support\Facades\Validator;
+use Maatwebsite\Excel\Facades\Excel;
 use TJGazel\Toastr\Facades\Toastr;
-use Yajra\DataTables\DataTables;
-use Illuminate\Support\Str;
 use Illuminate\Http\JsonResponse;
 use App\Model\Purchase\PurchaseD;
 use App\Model\Purchase\PurchaseH;
-use Illuminate\Support\Facades\Redirect;
+use Yajra\DataTables\DataTables;
+use App\Exports\ProductsExport;
 use App\Model\Master\Category;
-use Illuminate\Support\Facades\Storage;
-use Spatie\Activitylog\Models\Activity;
+use App\Model\Master\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
+use App\Content;
 use DB;
 
 class ProductController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
-        return view("product.index");
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
         $categories = Category::all()->where('category_status', '=', '1');
-        $latestProductCode = intval(Product::select('product_code')
-                                        ->orderBy('product_id', 'DESC')
-                                        ->pluck('product_code')
+        $latestProductCode = intval(Product::select('product_code')->orderBy('product_id', 'DESC')->pluck('product_code')
                                         ->first()) + 1;
-                                        
-        return view("product.create", compact('categories', 'latestProductCode'));
+
+        return view("product.index", compact('categories', 'latestProductCode'));
     }
 
     public function store(Request $request)
     {
-    
         $validator = Validator::make($request->all(), [
-            'product_code' => 'required|unique:products|max:255',
-            'product_name' => 'required|max:255',
+            'product_code' => 'required|unique:products',
+            'product_name' => 'required',
+            'status' => 'required', 
+            'product_selling_price' => 'required',
+            'purchase_price' => 'required',
+            'stock_available' => 'required',
+            'stock_total' => 'required',
+            'category_status' => 'required'
         ]);
 
-        if($validator->fails()){
-            Toastr::warning('Product code cannot be repeated or blank.', 'Warning');
+        if($validator->fails())
+        {
+            toastr()->warning('Failed to create new Product. Please check your inputs.');
             return Redirect::back()->withErrors($validator)->withInput();
         } 
 
         if($request->stock_available > $request->stock_total)
         {
-            Toastr::warning('Product available must not be higher than Product total.', 'Warning');
+            toastr()->warning('Product Stock Availabke must not be higher than Product Stock total.');
             return Redirect::back()->withErrors($validator)->withInput();
         }
 
         $data = new Product();
-
-        if ($request->hasFile('image')) {
-            if ($request->file('image')->isValid()) {
-                $imageName = $request->image->getClientOriginalName();
-                $request->image->storeAs('images', $imageName, 'public');
-                $data->product_image = $imageName;
-            }
+       
+        if ($request->hasFile('image')) 
+        {
+            $imageName = time().'.'.$request->image->getClientOriginalExtension();
+            $request->image->move(public_path('storage/images'), $imageName);  
+            $data->product_image = $imageName;
         }
 
         $data->product_code = $request->product_code;
@@ -93,77 +83,67 @@ class ProductController extends Controller
         $data->user_modified = $request->user()->id;
 
         if($data->save()){
-            Toastr::success('Product created Successfully', 'Success');
-            return view('product.index');
-        }else{
-            Toastr::error('Failed to create new Product', 'Error');
-            return redirect()->back();
+            $categories = Category::all()->where('category_status', '=', '1');
+            $latestProductCode = intval(Product::select('product_code')->orderBy('product_id', 'DESC')->pluck('product_code')
+                                        ->first()) + 1;
+
+            toastr()->success('Product created successfully.');
+            return view('category.index', compact('latestProductCode', 'categories'));
         }
+        
+        toastr()->success('Failed to create a new Product');
+        return redirect()->back();
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
-        $product = Product::find($id);
-        $data = Product::with(['user_modify'], 'id', $product->user_modified)
-                        ->where('product_id', '=', $id)->first();
+        $data = Product::with(['user_modify'])->where('product_id', $id)->first();
                         
         $category = Category::select('category_name')
                             ->where('category_id', '=', $data->product_type)
                             ->pluck('category_name')
                             ->first();
 
-        if($data->count() > 0){
-            return view('product.view', compact('data', 'category'));
-        }else{
-            Toastr::error('Product cannot be retrieved.', 'Error');
+        if($data->count() < 0){
+            toastr()->error('Product failed to retrieve data.');
             return view('product.index');
         }
+
+        return view('product.view', compact('data', 'category'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        $categories = Category::all()->where('category_status', '=', '1');
-        $data = Product::where('product_id', $id)->where('product_active', '!=', 2)->get();
-        //dd($data);
-        if($data->count() > 0){
-            return view('product.update', compact('data', 'categories'));
+        $categories = Category::all()->where('category_status', '1');
+        $data = Product::find($id);
+        
+        if($data->count() < 0){
+            toastr()->error('Product failed to retrieve data.');
+            return view('product.index');
         }
+
+        return view('product.update', compact('data', 'categories'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
-        //
         $data = Product::find($id);
+
+        if($data == null){
+            toastr()->error('Product failed to retrieve data.');
+            return view('product.index');
+        }
+
         if ($request->hasFile('image')){     
             if ($request->file('image')->isValid()) {   
 
                 $imageName = $request->image->getClientOriginalName();
             
-                //code for remove old file
                 if($data->product_image != '' || $data->product_image != null){
-                    Storage::delete('/public/images/'.$data->product_image);
+                    Storage::delete('/public/storage/images/'.$data->product_image);
                 }
 
-                $request->image->storeAs('images', $imageName, 'public');
+                $request->image->move(public_path('storage/images'), $imageName);  
                 $data->product_image = $imageName;
             }
        }
@@ -184,39 +164,44 @@ class ProductController extends Controller
         $data->user_modified = $request->user()->id;
 
         if($data->save()){
-            Toastr::success('Product updated Successfully', 'Success');
-            return view('product.index');
-        }else{
-            Toastr::error('Failed to update Product', 'Error');
-            return redirect()->back();
+            $categories = Category::all()->where('category_status', '1');
+            $latestProductCode = intval(Product::select('product_code')
+                                        ->orderBy('product_id', 'DESC')
+                                        ->pluck('product_code')
+                                        ->first()) + 1;
+
+            toastr()->success('Product updated successfully');
+            return view('product.index', compact('categories', 'latestProductCode'));
         }
-    
+        
+        toastr()->error('Product failed to update data.');
+        return redirect()->back();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy($id)
     {
-        //
         $data = Product::find($id);
-        $data->product_active = 2;
-        $data->user_modified = Auth::user()->id; //Fix this line, If user session is expired an ErrorException will appear in console
+
+        if($data == null){
+            toastr()->error('Product failed to retrieve data.');
+            return view('product.index');
+        }
+
+        $data->product_active = 0;
+        $data->user_modified = Auth::user()->id; 
 
         if($data->save()){
-            Toastr::success('Product Deleted successfully', 'Success');
+            toastr()->success('Product Deleted deactivated successfully.', 'Success');
             return new JsonResponse(['status'=>true]);
-        }else{
-            Toastr::error('Product cannot be Deleted.', 'Error');
-            return new JsonResponse(['status'=>false]);
         }
+
+        toastr()->error('Product failed to deactivate.');
+        return new JsonResponse(['status'=>false]);
     }
 
     public function ProductActivities($id)
     {
+        $content = Content::first();
         $data = Activity::with('user', 
                                 'product', 
                                 'sales_d', 
@@ -225,7 +210,8 @@ class ProductController extends Controller
                                 'category')
                                 ->where('subject_id', '=', $id)
                                 ->where('log_name', '=', 'Product')
-                                ->orderBy('created_at', 'desc')
+                                ->orderBy('id', 'desc')
+                                ->take($content->max_activities ?? 1000)
                                 ->get();
 
         return Datatables::of($data)
@@ -270,22 +256,21 @@ class ProductController extends Controller
             
         })->make(true);
     }
-
-    public function datatable()
+ 
+    public function datatable() 
     {
-        $data = Product::where('product_active', '!=', 2);
+        $content = Content::first();
+        $data = Product::where('product_active', 1)->orderBy('product_name', 'asc')->get();
         
         return Datatables::of($data)
             ->addColumn('action', function($data){
 
             $url_edit = url('master/product/'.$data->product_id.'/edit');
             $url = url('master/product/'.$data->product_id);
-            $url_history = url('master/product/history/'.$data->product_id);
+            
             $view = "<a class = 'btn btn-primary' href = '".$url."' title = 'View'><i class = 'nav icon fas fa-eye'></i></a>";
             $edit = "<a class = 'btn btn-warning' href = '".$url_edit."' title = 'Edit'><i class = 'nav icon fas fa-edit'></i></a>";
             $delete = "<button data-url = '".$url."' onclick = 'deleteData(this)' class = 'btn btn-action btn-danger' title = 'Delete'><i class = 'nav-icon fas fa-trash-alt'></i></button>";
-            
-            //$history = "<a class = 'btn btn-action btn-warning' href = '".$url_history."' title = 'History' data-toggle = 'modal' data-target = '#modal-default'>Purchase Detail</a>";
             
             return $view."".$edit."".$delete;
 
@@ -314,14 +299,19 @@ class ProductController extends Controller
             $string_replace_name = str_ireplace("\r\n", ',', $data->product_code);
             return Str::limit($string_replace_name, 10, '...');
         })
-        ->rawColumns(['action'])
         ->editColumn('product_id', 'ID:{{$product_id}}')
+        ->addColumn('checkbox', function($data){
+            $chk = '<input type="checkbox" name="products_checkbox[]" class="products_checkbox" value="'. $data->product_id .'" />';
+            return $chk;
+        })
+        ->rawColumns(['checkbox', 'action'])
         ->make(true);
     }
 
     public function dataTableTrash()
     {
-        $data = Product::where('product_active', '=', 2);
+        $content = Content::first();
+        $data = Product::where('product_active', 0)->get();
         
         return Datatables::of($data)
             ->addColumn('action', function($data){
@@ -329,7 +319,7 @@ class ProductController extends Controller
             $url = url('master/product/'.$data->product_id);
             $undoTrash = url('product/undoTrash/'.$data->product_id);
             $view = "<a class = 'btn btn-primary' href = '".$url."' title = 'View'><i class = 'nav icon fas fa-eye'></i></a>";
-            $undo = "<button data-url = '".$undoTrash."' onclick = 'undoTrash(this)' class = 'btn btn-action btn-danger' title = 'Undo Delete'>Activate Product</button>";
+            $undo = "<button data-url = '".$undoTrash."' onclick = 'undoTrash(this)' class = 'btn btn-action btn-success' title = 'Re-Activate'><i class='fas fa-trash-restore-alt'></i></button>";
             
             return $view."".$undo;
 
@@ -354,11 +344,14 @@ class ProductController extends Controller
             $string_replace = str_ireplace("\r\n", ',', $productCategory);
             return Str::limit($string_replace, 25, '...');
         })
+        ->editColumn('product_id', 'ID:{{$product_id}}')
         ->editColumn('stock_available', function($data){
             return number_format($data->stock_available, 0, '.', ',');
+        })->addColumn('checkbox_t', function($data){
+            $chk_t = '<input type="checkbox" name="products_trash_checkbox[]" class="products_trash_checkbox" value="'. $data->product_id .'" />';
+            return $chk_t;
         })
-        ->rawColumns(['action'])
-        ->editColumn('product_id', 'ID:{{$product_id}}')
+        ->rawColumns(['checkbox_t', 'action'])
         ->make(true);
     }
 
@@ -370,16 +363,22 @@ class ProductController extends Controller
         $data->user_modified = Auth::user()->id;
         
         if($data->save()){
-            Toastr::success('Product has been activated successfully', 'Success');
+            toastr()->success('Product activated successfully.');
             return new JsonResponse(['status'=>true]);
-        }else{
-            Toastr::error('Product cannot be activated.', 'Error');
-            return new JsonResponse(['status'=>false]);
         }
+        
+        toastr()->error('Product failed to deactivate.');
+        return new JsonResponse(['status'=>false]);
+        
     }
 
     public function datatable_product(){
-        $data = Product::select('products.*')->with(['product_category'])->where('products.product_active', '=', '1');
+        $content = Content::first();
+
+        $data = Product::select('products.*')
+                        ->with(['product_category'])
+                        ->where('products.product_active', '=', 1)
+                        ->get();
         
         return Datatables::of($data)
                 ->editColumn('product_selling_price', function($data){
@@ -402,4 +401,24 @@ class ProductController extends Controller
                 ->make(true);
     }
 
+    public function productExport() 
+    {
+        return Excel::download(new ProductsExport, 'product-report.xlsx');
+    }    
+
+    public function deactivateProduct(Request $request)
+    {
+        $ids = $request->input('id');
+        $sales = Product::whereIn('product_id', $ids)->update(array('product_active' => 0, 'user_modified' => Auth::user()->id));
+  
+        echo 'Product/s successfully deactivated.';
+    }
+
+    public function reactivateProduct(Request $request)
+    {
+        $ids = $request->input('id');
+        $sales = Product::whereIn('product_id', $ids)->update(array('product_active' => 1, 'user_modified' => Auth::user()->id));
+  
+        echo 'Product/s successfully re-activated.';
+    }
 }

@@ -19,7 +19,7 @@ class CreateProductsTable extends Migration
                 $table->string('product_code');
                 $table->string('product_name');
                 $table->string('product_type');
-                $table->string('product_brand');
+                $table->string('product_brand')->nullable();
                 $table->double('purchase_price', 15, 2);
                 $table->double('product_selling_price', 15, 2);
                 $table->text('product_information')->nullable();

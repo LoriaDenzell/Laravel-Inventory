@@ -1,32 +1,24 @@
 @extends('layouts.backend.app')
-
-@push('css')
-<!-- DataTables -->
-<link rel="stylesheet" href="{{ asset('asset/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
-@endpush
 <title>Stock Report</title>
 @section('content')
 
-<!-- Content Header (Page header) -->
 <div class="content-header">
   <div class="container-fluid">
-      <div class="row mb-2">
-          <div class="col-sm-6">
-              <h1 class="m-0 text-dark">Stock Report</h1>
-          </div><!-- /.col -->
-          <div class="col-sm-6">
-          <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="/home">Home</a></li>
-              <li class="breadcrumb-item">Master</li>
-              <li class="breadcrumb-item active">Stock</li>
-          </ol>
-          </div><!-- /.col -->
-      </div><!-- /.row -->
-  </div><!-- /.container-fluid -->
+    <div class="row mb-2">
+      <div class="col-sm-6">
+        <h1 class="m-0 text-dark">Stock Report</h1>
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="/home">Home</a></li>
+          <li class="breadcrumb-item">Master</li>
+          <li class="breadcrumb-item active">Stock</li>
+        </ol>
+      </div>
+    </div>
+  </div>
 </div>
-<!-- /.content-header -->
 
-<!-- Main content -->
 <section class="content">
   <div class="container-fluid">
     <div class="row">
@@ -78,18 +70,11 @@
               </tfoot>
             </table>
           </div>
-          <!-- /.card-body -->
         </div>
-        <!-- /.card -->
       </div>
-      <!-- /.col -->
     </div>
-    <!-- /.row -->
   </div>
-  <!-- /.container-fluid -->
 </section>
-<!-- /.content -->
-
 @endsection
 
 @push('js')
@@ -104,7 +89,7 @@
       scrollX:true,
       autoWidth: false,
       ajax:"{{route('browse-product/datatable')}}",
-      order:[0, 'desc'],
+      order:[1, 'desc'],
       columns:[
             {data:'product_code', name: 'product_code'},
             {data:'product_name', name: 'product_name'},
@@ -135,7 +120,5 @@
       $('.recordsFilter').val(records);
     });
   });
-
 </script>
-
 @endpush

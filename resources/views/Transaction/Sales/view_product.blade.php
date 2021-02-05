@@ -1,4 +1,3 @@
-
 <table class = "table table-bordered dataTable-sales-product" cellspacing = 0 style = "width: 100%;" id = "table-media-{{$id_count}}">
     <thead>
         <tr>

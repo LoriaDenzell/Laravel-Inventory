@@ -2,23 +2,21 @@
 <title>Dashboard (Home)</title>
 @section('content')
 
-<!-- Content Header (Page header) -->
 <div class="content-header">
   <div class="container-fluid">
     <div class="row mb-2">
       <div class="col-sm-6">
         <h1 class="m-0 text-dark">Dashboard</h1>
-      </div><!-- /.col -->
+      </div>
       <div class="col-sm-6">
         <ol class="breadcrumb float-sm-right">
           <li class="breadcrumb-item"><a href="#">Home</a></li>
           <li class="breadcrumb-item active">Dashboard</li>
         </ol>
-      </div><!-- /.col -->
-    </div><!-- /.row -->
-  </div><!-- /.container-fluid -->
+      </div>
+    </div>
+  </div>
 </div>
-<!-- /.content-header -->
 
 <!-- Main content -->
 <section class="content">
@@ -218,8 +216,8 @@
               </div>
               <div class="card-body">
                 <?php 
-                  if($HighestSalesToday != null && isset($SalesHInformation->shop_name)){
-                    echo "<b>".number_format($HighestSalesToday, 0, '.', ',')." - ". $SalesHInformation->shop_name."</b>";
+                  if($HighestSalesToday != null && isset($SalesHInformation->customer)){
+                    echo "<b>".number_format($HighestSalesToday, 0, '.', ',')." - ". $SalesHInformation->customer."</b>";
                   }else{
                     echo "<i class='icon fas fa-ban'></i> ";
                     echo "Data not Available";
@@ -241,8 +239,8 @@
               </div>
               <div class="card-body">
                 <?php 
-                  if($HighestRevenueToday != null && isset($HighestRevenue->shop_name)){
-                    echo "<b>".number_format($HighestRevenueToday, 0, '.', ',')." - ". $HighestRevenue->shop_name."</b>";
+                  if($HighestRevenueToday != null && isset($HighestRevenue->customer)){
+                    echo "<b>".number_format($HighestRevenueToday, 0, '.', ',')." - ". $HighestRevenue->customer."</b>";
                   }else{
                     echo "<i class='icon fas fa-ban'></i> ";
                     echo "Data not Available";
@@ -264,7 +262,7 @@
               </div>
               <div class="card-body">
                 <?php
-                  if($ExpensivePurchaseDToday != null)
+                  if($ExpensivePurchaseDToday != "N/A")
                   {
                     echo "<b>".number_format($ExpensivePurchaseDToday->price, 0, '.', ',')." - ". $ExpensivePurchaseDToday->product_name."</b>";
                   }else{
@@ -318,6 +316,7 @@
             </div>
           </div>
           <div class="card-body ">
+          @if(count($ValuesArray) > 0)
             <div class="barChart1">
               <canvas id="barChart1"></canvas>
             </div>
@@ -337,6 +336,13 @@
               }
               ?>
             </div>
+            @else 
+              <div class="alert alert-warning alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="fas fa-exclamation-triangle"></i> Warning</h4>
+                Insufficient data - Bar chart will not be displayed for now.
+              </div>
+            @endif
           </div>
         </div>
       </div>
@@ -358,8 +364,17 @@
                         <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
                     </div>
                 </div>
+               
                 <div class="card-body">
+                  @if(count($NamesArray) > 0 || count($ValuesArray) > 0)
                     <canvas id="donutChart" style="min-height: 250px; height: 300px; max-height: 350px; max-width: 100%;"></canvas>
+                  @else 
+                    <div class="alert alert-warning alert-dismissible">
+                      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                      <h4><i class="fas fa-exclamation-triangle"></i> Warning</h4>
+                      Insufficient data - Donut chart will not be displayed for now.
+                    </div>
+                  @endif
                 </div>
             </div>
         </div>
@@ -383,7 +398,15 @@
                 </div>
             </div>
             <div class="card-body">
+              @if(count($DayRecords) > 0)
                 <div id="order_vol_day" style="height: 300px;"></div>
+              @else
+              <div class="alert alert-warning alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="fas fa-exclamation-triangle"></i> Warning</h4>
+                Insufficient data - Bar chart will not be displayed for now.
+              </div>
+              @endif
             </div>
         </div>
         @endrole
@@ -406,9 +429,17 @@
             </div>
           </div>
           <div class="card-body ">
+            @if($Active_Products > 0 || $Inactive_Products > 0)
             <div class="barChart_sales_purchase">
               <canvas id="barChart_sales_purchase"></canvas>
             </div>
+            @else 
+              <div class="alert alert-warning alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="fas fa-exclamation-triangle"></i> Warning</h4>
+                Insufficient data - Bar chart will not be displayed for now.
+              </div>
+            @endif
           </div>
         </div>
       </div>
@@ -428,7 +459,15 @@
             </div>
           </div>
           <div class="card-body">
-            <canvas id="pieChart1"></canvas>
+            @if($Active_Products > 0 || $Inactive_Products > 0)
+              <canvas id="pieChart1"></canvas>
+            @else 
+              <div class="alert alert-warning alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="fas fa-exclamation-triangle"></i> Warning</h4>
+                Insufficient data - Bar chart will not be displayed for now.
+              </div>
+            @endif
           </div>
         </div>
       </div>
@@ -453,6 +492,9 @@
           </div>
           <!-- /.card-header -->
           <div class="card-body">
+          <?php 
+            if(count($MostLoyalCustomer) >= 5){
+          ?>
             <table class="table table-bordered">
               <thead>                  
                 <tr>
@@ -464,43 +506,35 @@
               </thead>
               <tbody>
                 <?php
-                  if(count($MostLoyalCustomer) >= 5){
+        
                     for($x=0; $x<count($MostLoyalCustomer); $x++){
                       echo "<tr>";
                       echo "<td>".$x."</td>";
-                      echo "<td>".strtoupper($MostLoyalCustomer[$x]->shop_name)."</td>"; 
+                      echo "<td>".strtoupper($MostLoyalCustomer[$x]->customer)."</td>"; 
                       echo "<td>".number_format($MostLoyalCustomer[$x]->count, 0, '.', ',')."</td>";
                       echo "<td>".number_format($MostLoyalCustomer[$x]->total, 0, '.', ',')."</td>";
                       echo "</tr>";
                     }
-                  }else{
-                      echo "<tr>";
-                      echo "<td>Data Not Available</td>";
-                      echo "<td>Data Not Available</td>";
-                      echo "<td>Data Not Available</td>";
-                      echo "<td>Data Not Available</td>";
-                      echo "</tr>";
+                  }
+                  else
+                  {
+                    ?>
+                    <div class="alert alert-warning alert-dismissible">
+                      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                      <h4><i class="fas fa-exclamation-triangle"></i> Warning</h4>
+                      Insufficient data - Data Table will not be displayed for now.
+                    </div>
+                    <?php 
                   }
                 ?>
               </tbody>
             </table>
           </div>
-          <!--
-          <div class="card-footer clearfix">
-            <ul class="pagination pagination-sm m-0 float-right">
-              <li class="page-item"><a class="page-link" href="#">&laquo;</a></li>
-              <li class="page-item"><a class="page-link" href="#">1</a></li>
-              <li class="page-item"><a class="page-link" href="#">2</a></li>
-              <li class="page-item"><a class="page-link" href="#">3</a></li>
-              <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
-            </ul>
-          </div>
-          -->
         </div>
       </div>
       <div class = "col-md-6">
         <div class="card">
-          <div class="card-header bg-warning">
+          <div class="card-header bg-success">
             <h3 class="card-title"><i class="fab fa-dropbox"></i> Recently Added Products</h3>
 
             <div class="card-tools">
@@ -517,28 +551,28 @@
             <ul class="products-list product-list-in-card pl-2 pr-2">
               <?php 
                 if(count($RecentlyAddedProducts) >= 5){
-                  for($y=0; $y<count($RecentlyAddedProducts); $y++){
+                  for($x=0; $x<count($RecentlyAddedProducts); $x++){
                     ?>
                     <li class='item'>
                       <div class='product-img'>
                         <?php 
-                          if($RecentlyAddedProducts[$y]->product_image == null){
+                          if($RecentlyAddedProducts[$x]->product_image == null){
                         ?>
                           <img src="{{asset('/storage/images/default-150x150.png')}}" alt='Product Image' class='img-size-50'>
                         <?php 
                           }else{
                         ?>
-                          <img src="{{asset('/storage/images/'.$RecentlyAddedProducts[$y]->product_image)}}" alt='Product Image' class='img-size-50'>
+                          <img src="{{asset('/storage/images/'.$RecentlyAddedProducts[$x]->product_image)}}" alt='Product Image' class='img-size-50'>
                         <?php 
                           }
                         ?>
                       </div>
                       <div class='product-info'>
-                        <a href='javascript:void(0)' class='product-title-".$y."'> {{ $RecentlyAddedProducts[$y]->product_name }}
-                        <span class='badge badge-success float-right'>{{ number_format($RecentlyAddedProducts[$y]->product_selling_price, 0, '.', ',') }}</span></a>
+                        <a href="{{url('master/product/'.$RecentlyAddedProducts[$x]->product_id)}}" class='product-title-".$x."'> {{ $RecentlyAddedProducts[$x]->product_name }}
+                        <span class='badge badge-success float-right'>{{ number_format($RecentlyAddedProducts[$x]->product_selling_price, 0, '.', ',') }}</span></a>
                         <?php 
-                          if($RecentlyAddedProducts[$y]->product_information != null){
-                            $productDescription = str_ireplace("\r\n", ',', $RecentlyAddedProducts[$y]->product_information);
+                          if($RecentlyAddedProducts[$x]->product_information != null){
+                            $productDescription = str_ireplace("\r\n", ',', $RecentlyAddedProducts[$x]->product_information);
                             $productDescription = Str::limit($productDescription, 25, '...');
                         ?>
                             <span class='product-description'>
@@ -557,21 +591,17 @@
                     </li>
                   <?php 
                   }
-                }else{
-                  for($y=0; $y<count($RecentlyAddedProducts); $y++){
-                    echo "<li class='item'>";
-                    echo "<div class='product-img'>";
-                    echo "<img src='dist/img/default-150x150.png' alt='Product Image' class='img-size-50'>";
-                    echo "</div>";
-                    echo "<div class='product-info'>";
-                    echo "<a href='javascript:void(0)' class='product-title'> Data Not Available";
-                    echo "<span class='badge badge-info float-right'>Data Not Available</span></a>";
-                    echo "<span class='product-description'>";
-                    echo "Data Not Available";
-                    echo "</span>";
-                    echo "</div>";
-                    echo "</li>";
-                  }
+                }
+                else
+                {
+                ?>
+                  <br>
+                    <div class="alert alert-warning alert-dismissible">
+                      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                      <h4><i class="fas fa-exclamation-triangle"></i> Warning</h4>
+                      Insufficient data - Data Table will not be displayed for now.
+                    </div>
+                  <?php
                 }
               ?>
             </ul>
@@ -592,7 +622,7 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-header bg-success">
-            <h5 class="card-title"><i class="fas fa-business-time"></i><b> Recap Report for this Month ({{$CurrentMonth}})</b></h5>
+            <h5 class="card-title"><i class="fas fa-business-time"></i><b> Recap Report for this Month ({{$CurrentMonthDisplay}})</b></h5>
             <div class="card-tools">
               <button type="button" class="btn btn-tool" data-card-widget="collapse">
                 <i class="fas fa-minus"></i>
@@ -610,9 +640,6 @@
               <li class="nav-item">
                 <a class="nav-link" href="#recordPanel" data-toggle = "tab" role = "tab">Record</a>
               </li>
-              <li class="nav-item">
-                <a class="nav-link disabled" href="#">Disabled</a>
-              </li>
             </ul>
           </div>
           
@@ -620,11 +647,31 @@
             <div class = "tab-content">
               <div class = "tab-pane fade in active show" id = "chartPanel" role = "tabPanel">
                 <div class="row">
+                  <div class="col-12">
+                    <div class="card-body align-items-center d-flex justify-content-center">
+                      <div class="col-md-4">
+                        <form class="form-horizontal" method = "GET" action = "{{ route('/home') }}">
+                          <div class="input-group mb-4 {{$errors->has('date') ? 'has-error' : ''}}" >
+                            <div class="input-group-prepend">
+                              <span class="input-group-text"><i class="far fa-calendar-alt"></i></span>
+                            </div>
+                          
+                            <input type="month" class="form-control" id="recap-date" name = "date_recap" value="<?=date('Y-m')?>">
+
+                            <span class="input-group-append">
+                              <button type="submit" name = "dateSubmit" id = "dateSubmit" class="btn btn-info btn-flat">Submit</button>
+                            </span>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
                   <div class="col-md-8">
                     <p class="text-center">
-                      <strong>Sales: {{$MonthStart}} to {{$MonthEnd}}</strong>
+                      <strong>Sales: {{$firstDayMonth}} to {{$lastDayMonth}}</strong>
                     </p>
-
                     <div class="chart">
                       <!-- Sales Chart Canvas -->
                       <canvas id="salesChart" height="180" style="height: 180px;"></canvas>
@@ -637,31 +684,67 @@
 
                     <div class="progress-group">
                       Date with highest # of Sales:
-                      <span class="float-right"><?php echo "<b>".$Date_HighestMonthlySoldProducts." (".number_format($HighestMonthlySoldProducts, 0, '.', ',').")"; echo "</b>";?></span>
+                      <span class="float-right">
+                        <b>
+                          <?php 
+                            echo isset($HighestMonthlyRevenue) ? $HighestMonthlyRevenue->date ?? "N/A". " (".number_format($HighestMonthlyRevenue->total ?? 0, 0, '.', ',').")" : "N/A";
+                          ?>
+                        </b>
+                      </span>
                     </div>
 
                     <div class="progress-group">
                       Date with lowest # of Sales:
-                      <span class="float-right"><?php echo "<b>".$Date_LowestMonthlySoldProducts." (".number_format($LowestMonthlySoldProducts, 0, '.', ',').")"; echo "</b>";?></span>
+                      <span class="float-right">
+                        <b>
+                          <?php 
+                            echo isset($LowestMonthlyRevenue) ? $LowestMonthlyRevenue->date ?? "N/A". " (".number_format($LowestMonthlyRevenue->total ?? 0, 0, '.', ',').")" : "N/A";
+                          ?>
+                        </b>
+                      </span>
                     </div>
 
                     <div class="progress-group">
                       Highest Expenses:
-                      <span class="float-right"><?php echo "<b>".$HighestMonthlyExpense['date']." (".number_format($HighestMonthlyExpense['total'], 0, '.', ',').")"; echo "</b>";?></span>
+                      <span class="float-right">
+                        <b>
+                          <?php 
+                            echo isset($HighestMonthlyExpense) ? $HighestMonthlyExpense->date ?? "N/A". " (".number_format($HighestMonthlyExpense->total ?? 0, 0, '.', ',').")" : "N/A";
+                          ?>
+                        </b>
+                      </span>
                     </div>
 
                     <div class="progress-group">
                       Lowest Expenses:
-                      <span class="float-right"><?php echo "<b>".$LowestMonthlyExpense['date']." (".number_format($LowestMonthlyExpense['total'], 0, '.', ',').")"; echo "</b>";?></span>
+                      <span class="float-right">
+                        <b>
+                          <?php 
+                            echo isset($LowestMonthlyExpense) ? $LowestMonthlyExpense->date ?? "N/A". " (".number_format(isset($LowestMonthlyExpense) ? $LowestMonthlyExpense->total : 0, 0, '.', ',').")" : "N/A";
+                          ?>
+                        </b>
+                      </span>
                     </div>
                     <div class="progress-group">
                       # of Net Loss Days:
-                      <span class="float-right"><?php echo "<b>".$NumberOfNetLossDays. " </b>";?></span>
+                      <span class="float-right">
+                        <b>
+                        <?php 
+                          echo isset($NumberOfNetLossDays) ? $NumberOfNetLossDays : "N/A";
+                        ?>
+                        </b>
+                      </span>
                     </div>
 
                     <div class="progress-group">
                     # of Net Profit Days:
-                      <span class="float-right"><?php echo "<b>".$NumberOfNetProfitDays. " </b>";?></span>
+                      <span class="float-right">
+                        <b>
+                        <?php 
+                          echo isset($NumberOfNetProfitDays) ? $NumberOfNetProfitDays : "N/A";
+                        ?>
+                        </b>
+                      </span>
                     </div>
                   </div>
                 </div>
@@ -671,49 +754,40 @@
                   <thead>
                     <tr>
                       <th>Date</th>
-                      <th>Revenue</th>
-                      <th>Profit</th>
+                      <th>Sales</th>
+                      <th>Net Profit</th>
                       <th>No. of Orders</th>
                       <th>Expenses</th>
                     </tr>
                   </thead>
                   <tbody>
-                    <?php 
-                    
-                      if(count($MonthlyRevenue) != count($MonthlyExpenses))
-                      {
+                  <?php 
+                    if(isset($MonthlyRecords)){
+                      for($i=0; $i<count($MonthlyRecords); $i++){
                         echo "<tr>";
-                        echo "<th scope='row'>Unsufficient Data</td>";
-                        echo "<td>Unsufficient Data</td>";
-                        echo "<td>Unsufficient Data</td>";
-                        echo "<td>Unsufficient Data</td>";
-                        echo "<td>Unsufficient Data</td>";
+                          echo "<td>". $MonthlyRecords[$i]['date'] ."</td>";
+                          echo "<td>". $MonthlyRecords[$i]['sales_total'] ."</td>";
+                          echo "<td>". $MonthlyRecords[$i]['revenue_total'] ."</td>";
+                          echo "<td>". $MonthlyRecords[$i]['expense_total'] ."</td>";
+                          echo "<td>". $MonthlyRecords[$i]['order_total'] ."</td>";
                         echo "</tr>";
-                      }else{
-                        for($i=0; $i<count($MonthlyRevenue); $i++)
-                        {
-                          echo "<tr>";
-                          echo "<th scope='row'>". date('m.d.Y', strtotime($MonthlyRevenue[$i]->date)) ." - ". date("l", strtotime($MonthlyRevenue[$i]->date)). "</td>";
-                          echo "<td>". number_format($MonthlyRevenue[$i]->total, 0, '.', ',') ."</td>";
-
-                          echo "<td>"; 
-                          $profit = ($MonthlyRevenue[$i]->total - $MonthlyExpenses[$i]->total ?? 'Unsufficient Data');
-                          $profit_print = $profit > 0 ? "<span class='badge bg-success'>".number_format($profit, 0, '.', ',')."</span>" :  "<span class='badge bg-danger'>".number_format($profit, 0, '.', ',')."</span>";
-                          echo $profit_print."</td>";
-
-                          echo "<td>". number_format($MonthlySoldProducts[$i]->total, 0, '.', ',')."</td>";
-                          echo "<td>". number_format($MonthlyExpenses[$i]->total, 0, '.', ',') ."</td>";
-                          echo "</tr>";
-                        }
+                      }
+                    }else{
+                      echo "<tr>";
+                      echo "<td>N/A</td>";
+                      echo "<td>N/A</td>";
+                      echo "<td>N/A</td>";
+                      echo "<td>N/A</td>";
+                      echo "<td>N/A</td>";
+                      echo "</tr>";
                     }
-                      
-                    ?>
+                  ?>
                   </tbody>
                   <tfoot>
                     <tr>
                       <th>Date</th>
-                      <th>Revenue</th>
-                      <th>Profit</th>
+                      <th>Sales</th>
+                      <th>Net Profit</th>
                       <th>No. of Orders</th>
                       <th>Expenses</th>
                     </tr>
@@ -728,32 +802,72 @@
 
               <div class="col-sm-3 col-6">
                 <div class="description-block border-right">
-                  <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 17%</span>
-                  <h5 class="description-header">{{ number_format($CurrentMonthRevenue, 0, '.', ',') ?? 'Not yet available.'}}</h5>
+                  @if($CurrentMonthRevenuePercentage < 0)
+                    <span class="description-percentage text-danger">
+                      <i class="fas fa-caret-down"></i> 
+                      {{ $CurrentMonthRevenuePercentage }}%
+                    </span>
+                  @else
+                    <span class="description-percentage text-success">
+                      <i class="fas fa-caret-up"></i> 
+                      {{ $CurrentMonthRevenuePercentage }}%
+                    </span>
+                  @endif
+                  <h5 class="description-header">{{ number_format($CurrentMonthRevenueTotal, 0, '.', ',') ?? 'Not yet available.'}}</h5>
                   <span class="description-text">TOTAL REVENUE</span>
                 </div>
               </div>
 
               <div class="col-sm-3 col-6">
                 <div class="description-block border-right">
-                  <span class="description-percentage text-warning"><i class="fas fa-caret-left"></i> 0%</span>
-                  <h5 class="description-header">{{ number_format($CurrentMonthExpense, 0, '.', ',') ?? 'Not yet available.'}}</h5>
+                  @if($CurrentMonthExpensePercentage < 0)
+                    <span class="description-percentage text-danger">
+                      <i class="fas fa-caret-down"></i> 
+                      {{ $CurrentMonthExpensePercentage }}%
+                    </span>
+                  @else
+                    <span class="description-percentage text-success">
+                      <i class="fas fa-caret-up"></i> 
+                      {{ $CurrentMonthExpensePercentage }}%
+                    </span>
+                  @endif
+                  <h5 class="description-header">{{ number_format($CurrentMonthExpenseTotal, 0, '.', ',') ?? 'Not yet available.'}}</h5>
                   <span class="description-text">TOTAL EXPENSE</span>
                 </div>
               </div>
               
               <div class="col-sm-3 col-6">
                 <div class="description-block border-right">
-                  <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 20%</span>
-                  <h5 class="description-header">{{ number_format($CurrentMonthRevenue - $CurrentMonthExpense, 0, '.', ',') ?? 'Not yet available.'}}</h5>
+                  @if($CurrentMonthProfitPercentage < 0)
+                    <span class="description-percentage text-danger">
+                      <i class="fas fa-caret-down"></i> 
+                      {{ $CurrentMonthProfitPercentage }}%
+                    </span>
+                  @else
+                    <span class="description-percentage text-success">
+                      <i class="fas fa-caret-up"></i> 
+                      {{ $CurrentMonthProfitPercentage }}%
+                    </span>
+                  @endif
+                  <h5 class="description-header">{{ number_format($CurrentMonthProfitTotal, 0, '.', ',') ?? 'Not yet available.'}}</h5>
                   <span class="description-text">TOTAL PROFIT</span>
                 </div>
               </div>
               
               <div class="col-sm-3 col-6">
                 <div class="description-block">
-                  <span class="description-percentage text-danger"><i class="fas fa-caret-down"></i> 18%</span>
-                  <h5 class="description-header">{{ number_format($TotalMonthlyOrders, 0, '.', ',') ?? 'Not yet available.'}}</h5>
+                  @if($CurrentMonthOrderPercentage < 0)
+                    <span class="description-percentage text-danger">
+                      <i class="fas fa-caret-down"></i> 
+                      {{ $CurrentMonthOrderPercentage }}%
+                    </span>
+                  @else
+                    <span class="description-percentage text-success">
+                      <i class="fas fa-caret-up"></i> 
+                      {{ $CurrentMonthOrderPercentage }}%
+                    </span>
+                  @endif
+                  <h5 class="description-header">{{ number_format($CurrentMonthOrderTotal, 0, '.', ',') ?? 'Not yet available.'}}</h5>
                   <span class="description-text">TOTAL CUSTOMERS SERVED</span>
                 </div>
               </div>
@@ -762,7 +876,17 @@
             <div class="row">
             <div class="col-sm-3 col-6">
                 <div class="description-block border-right">
-                  <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 20%</span>
+                  @if($CurrentMonthAverageRevenuePercentage < 0)
+                    <span class="description-percentage text-danger">
+                      <i class="fas fa-caret-down"></i> 
+                      {{ $CurrentMonthAverageRevenuePercentage }}%
+                    </span>
+                  @else
+                    <span class="description-percentage text-success">
+                      <i class="fas fa-caret-up"></i> 
+                      {{ $CurrentMonthAverageRevenuePercentage }}%
+                    </span>
+                  @endif
                   <h5 class="description-header">{{ number_format($AverageMonthlyRevenue, 0, '.', ',') ?? 'Not yet available.'}}</h5>
                   <span class="description-text">AVERAGE DAILY REVENUE</span>
                 </div>
@@ -770,7 +894,17 @@
               
               <div class="col-sm-3 col-6">
                 <div class="description-block border-right">
-                  <span class="description-percentage text-warning"><i class="fas fa-caret-left"></i> 0%</span>
+                  @if($CurrentMonthAverageExpensePercentage < 0)
+                    <span class="description-percentage text-danger">
+                      <i class="fas fa-caret-down"></i> 
+                      {{ $CurrentMonthAverageExpensePercentage }}%
+                    </span>
+                  @else
+                    <span class="description-percentage text-success">
+                      <i class="fas fa-caret-up"></i> 
+                      {{ $CurrentMonthAverageExpensePercentage }}%
+                    </span>
+                  @endif
                   <h5 class="description-header">{{ number_format($AverageMonthlyExpense, 0, '.', ',') ?? 'Not yet available.'}}</h5>
                   <span class="description-text">AVERAGE DAILY EXPENSE</span>
                 </div>
@@ -778,15 +912,35 @@
               
               <div class="col-sm-3 col-6">
                 <div class="description-block border-right">
-                  <span class="description-percentage text-success"><i class="fas fa-caret-up"></i> 20%</span>
-                  <h5 class="description-header">{{ number_format($AverageDailyProfit, 0, '.', ',') ?? 'Not yet available.'}}</h5>
+                  @if($PreviousAverageDailyNetProfit < 0)
+                    <span class="description-percentage text-danger">
+                      <i class="fas fa-caret-down"></i> 
+                      {{ $PreviousAverageDailyNetProfit }}%
+                    </span>
+                  @else
+                    <span class="description-percentage text-success">
+                      <i class="fas fa-caret-up"></i> 
+                      {{ $PreviousAverageDailyNetProfit }}%
+                    </span>
+                  @endif
+                  <h5 class="description-header">{{ number_format($AverageDailyNetProfit, 0, '.', ',') ?? 'Not yet available.'}}</h5>
                   <span class="description-text">AVERAGE DAILY PROFIT</span>
                 </div>
               </div>
               
               <div class="col-sm-3 col-6">
                 <div class="description-block">
-                  <span class="description-percentage text-danger"><i class="fas fa-caret-down"></i> 18%</span>
+                  @if($AverageMonthOrderPercentage < 0)
+                    <span class="description-percentage text-danger">
+                      <i class="fas fa-caret-down"></i> 
+                      {{ $AverageMonthOrderPercentage }}%
+                    </span>
+                  @else
+                    <span class="description-percentage text-success">
+                      <i class="fas fa-caret-up"></i> 
+                      {{ $AverageMonthOrderPercentage }}%
+                    </span>
+                  @endif
                   <h5 class="description-header">{{ number_format($AverageMonthlyOrder, 0, '.', ',') ?? 'Not yet available.'}}</h5>
                   <span class="description-text">AVERAGE DAILY CUSTOMERS SERVED</span>
                 </div>
@@ -959,7 +1113,7 @@
         labels:['Inactive', 'Active', 'Deleted'],
         datasets:[{
             labels: 'Quantities Sold',
-            data:[ {{$Inactive_Products ?? ''}}, {{$Active_Products ?? ''}}, {{$Deleted_Products ?? ''}} ],
+            data:[ {{$Inactive_Products ?? 0}}, {{$Active_Products ?? 0}}],
             backgroundColor: [ 'yellow', 'green', 'red'],
         }],
       },
@@ -1001,24 +1155,25 @@
     }
   });
 
-  //--------------
-  //- AREA CHART -
-  //--------------
+  //--------------------------------------------------------------------------------------------------------------
+  //------------------------------------------------- AREA CHART -------------------------------------------------
+  //--------------------------------------------------------------------------------------------------------------
 
-  // Get context with jQuery - using jQuery's .get() method.
+  <?php 
+    $tempArr1 = array();
+    $tempArr2 = array();
+
+    foreach($MonthlyOrder as $m){
+      array_push($tempArr1, $m->day);
+      array_push($tempArr2, $m->total);
+    }
+  ?> 
   
   var areaChartCanvas = $('#salesChart').get(0).getContext('2d')
-  var labelsArr = <?php echo json_encode($MonthlySalesDays) ?> ;
 
-  //new array
-  //loop 
-  //if skip is detected
-  //splice the array values until before the skip was detected
-  //then insert the current number to the new array
-
-
-  var valuesArr = <?php echo json_encode($MonthlySalesValues) ?>;
-
+  var labelsArr = <?php echo json_encode($tempArr1); ?> 
+  var valuesArr = <?php echo json_encode($tempArr2); ?> 
+  
   var areaChartData = {
     labels  : labelsArr,
     datasets: [

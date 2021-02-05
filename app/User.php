@@ -12,11 +12,6 @@ class User extends Authenticatable
 {
     use Notifiable, LogsActivity, HasRoles; 
    
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected static $ignoreChangedAttributes = ['password', 'updated_at'];
 
     protected $fillable = [

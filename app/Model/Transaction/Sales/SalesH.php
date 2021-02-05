@@ -11,12 +11,12 @@ class SalesH extends Model
     protected $table = 'sales_h';
 
     protected $fillable = [
-        'invoice_no', 'date', 'total', 'active', 'user_modified', 'shop_name', 'information',
+        'invoice_no', 'date', 'total', 'active', 'user_modified', 'customer', 'information',
     ];
 
     protected static $logAttributes = 
     [
-        'invoice_no', 'date', 'total', 'active', 'user_modified', 'shop_name', 'information',
+        'invoice_no', 'date', 'total', 'active', 'user_modified', 'customer', 'information',
     ];
 
     protected static $logOnlyDirty = true;

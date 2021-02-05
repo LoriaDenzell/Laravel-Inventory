@@ -11,12 +11,12 @@ class PurchaseH extends Model
     protected $table = "purchase_h";
 
     protected $fillable = [
-        'no_invoice', 'total', 'id_ven', 'active', 'status', 'user_modified', 'date', 'information',
+        'no_invoice', 'total', 'id_ven', 'active', 'user_modified', 'date', 'information',
     ];
 
     protected static $logAttributes = 
     [
-        'no_invoice', 'total', 'id_ven', 'active', 'status', 'user_modified', 'date', 'information',
+        'no_invoice', 'total', 'id_ven', 'active', 'user_modified', 'date', 'information',
     ];
 
     protected static $logOnlyDirty = true;

@@ -18,9 +18,7 @@ class CreatePurchaseHTable extends Migration
                 $table->bigIncrements('id');
                 $table->string('no_invoice');
                 $table->integer('total')->nullable();
-                //$table->integer('id_ven');
                 $table->integer('active');
-                $table->enum('status', ['order', 'received']);
                 $table->integer('user_modified');
                 $table->date('date');
                 $table->text('information')->nullable();

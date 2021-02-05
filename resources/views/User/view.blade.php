@@ -2,37 +2,32 @@
 <title>User Profile</title>
 @section('content')
 
- <!-- Content Header (Page header) -->
- <div class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-            </div><!-- /.col -->
-            <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="/home">Home</a></li>
-                <li class="breadcrumb-item">User</li>
-                <li class="breadcrumb-item active">View User Profile</li>
-            </ol>
-            </div><!-- /.col -->
-        </div><!-- /.row -->
-    </div><!-- /.container-fluid -->
-</div>
-<!-- /.content-header -->
 
-<!-- Main content -->
+<div class="content-header">
+  <div class="container-fluid">
+    <div class="row mb-2">
+      <div class="col-sm-6">
+      </div>
+      <div class="col-sm-6">
+        <ol class="breadcrumb float-sm-right">
+          <li class="breadcrumb-item"><a href="/home">Home</a></li>
+          <li class="breadcrumb-item">User</li>
+          <li class="breadcrumb-item active">View User Profile</li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
+
 <section class="content">
   <div class="container-fluid">
     <div class="row">
-      <!-- left column -->
       <div class="col-md-12">
-        <!-- Horizontal Form -->
         <div class="card card-info">
           <div class="card-header">
             <h3 class="card-title"><i class="fas fa-user"></i> User Profile Information</h3>
           </div>
-          <!-- /.card-header -->
-          <!-- form start -->
+          
           <form class="form-horizontal" method = "POST">
             @csrf 
             <div class="card-body">
@@ -61,7 +56,10 @@
                     <div class="input-group-prepend">
                       <span class="input-group-text"><i class="fas fa-venus-mars"></i></span>
                     </div>
-                    <input type="text" class="form-control" id="gender" value = "{{ $data->gender}}" name = "gender" placeholder="Gender" disabled>
+                    <?php 
+                      $genderDisplay = $data->gender == 'M' ? 'Male' : 'Female';
+                    ?>
+                    <input type="text" class="form-control" id="gender" value = "{{ $genderDisplay }}" name = "gender" placeholder="Gender" disabled>
                   </div>
                 </div>
                 <div class="col-md-4">
@@ -135,17 +133,11 @@
                 </div>
               </div>
             </div>
-            <!-- /.card-body -->
           </form>
         </div>
-        <!-- /.card -->
-
       </div>
-      <!--/.col (left) -->
-      <!-- right column -->
     </div>
-    <!-- /.row -->
-  </div><!-- /.container-fluid -->
+  </div>
 
   <div class="container-fluid">
     <div class="row">
@@ -199,17 +191,11 @@
               </tfoot>
             </table>
           </div>
-          <!-- /.card-body -->
         </div>
-        <!-- /.card -->
       </div>
-      <!-- /.col -->
     </div>
-    <!-- /.row -->
   </div>
-  <!-- /.container-fluid -->
 </section>
-<!-- /.content -->
 
 @endsection
 @push('js')
@@ -227,7 +213,7 @@
       scrollX:true,
       autoWidth: false,
       ajax:'/userActivities/' + {{$data->id}},
-      order:[5, 'desc'],
+      order:[],
       columns:[
         {data:'log_name', name: 'log_name'},
         {data:'description', name: 'description'},
