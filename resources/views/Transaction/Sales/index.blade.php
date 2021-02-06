@@ -247,23 +247,23 @@
               </div>
               @if(count($addons) > 0)
                 <div class="col-sm-2">
-                  <select class = "form-control" id = "addons" name = "addons[]">
+                  <select class = "form-control" id = "addons_1" name = "addons[]">
                     <option selected disabled>Choose Addons</option>
                     @foreach($addons as $addon)
                         <option value="{{$addon->id}}">{{$addon->addon_name}}</option>
                     @endforeach
                   </select>
                 </div>
+                <div class="col-sm-1">
+                  <input type="number" 
+                      class="form-control" 
+                      id="addon_total_1" 
+                      name = "addon_total[]" 
+                      value="{{ old('addon_total') }}"
+                      placeholder = "Qty" 
+                      onkeyup="this.value=this.value.replace(/[^\d]/,'')">
+                </div>
               @endif
-              <div class="col-sm-1">
-                <input type="number" 
-                    class="form-control" 
-                    id="addon_total" 
-                    name = "addon_total[]" 
-                    value="{{ old('addon_total') }}"
-                    placeholder = "Qty" 
-                    onkeyup="this.value=this.value.replace(/[^\d]/,'')">
-              </div>
               <div class = "col-sm-1">
                 <a href = "javascript:void(0)" class = "btn btn-primary add_Button" title = "Add Row"><i class = "fas fa-plus"></i></a>
               </div>
@@ -275,7 +275,7 @@
         
           <!-- MODAL FOOTER -->
           <div class="modal-footer">
-            <button type="submit" class="btn btn-danger float-right">Cancel</button>
+            <button type="submit" class="btn btn-danger float-right" data-dismiss="modal">Cancel</button>
             <button type="submit" class="btn btn-success float-right">Submit</button>
           </div>
 
@@ -377,8 +377,9 @@
                 '<div class="col-sm-1">' +
                     '<input type="text" class="form-control" id="total_'+X+'" value="{{ old("total_'+X+'") }}" name = "total[]" placeholder = "Qty" required>' +
                 '</div>' +
+                @if(count($addons) > 0)
                 '<div class="col-sm-2">' +
-                    '<select class = "form-control" id = "addons" name = "addons[]">' +
+                    '<select class = "form-control" id = "addons_'+X+'" name = "addons[]">' +
                             '<option selected disabled>Choose Addons</option>' +
                                 @foreach($addons as $addon)
                                     '<option value="{{$addon->id}}">{{$addon->addon_name}}</option>' +
@@ -386,8 +387,9 @@
                         '</select>' +
                 '</div>' +
                 '<div class = "col-sm-1">' +
-                    '<input type="number" class="form-control" id="addon_total" name = "addon_total[]" placeholder = "Qty">' + 
+                    '<input type="number" class="form-control" id="addon_total_'+X+'" name = "addon_total[]" placeholder = "Qty">' + 
                 '</div>' +
+                @endif
                 '<div class = "col-sm-1">' +
                     '<a href = "javascript:void(0)" class = "btn btn-danger remove" title = "Delete"><i class = "fas fa-minus"></i></a>' +
                 '</div>' +
@@ -396,6 +398,18 @@
                 '</div>' +
             '</div>'
         );
+
+        $("[id^='addons_']").change(function() {
+          var addonElement = $(this).closest(".row").find("[id^='addon_total_']");
+          addonElement.prop("required",true);
+          addonElement.attr({"min" : 1});
+        });
+    });
+
+    $("[id^='addons_']").change(function() {
+      var addonElement = $(this).closest(".row").find("[id^='addon_total_']");
+      addonElement.prop("required",true);
+      addonElement.attr({"min" : 1});
     });
 
     $(wrapper).on('click', '.remove', function(e){

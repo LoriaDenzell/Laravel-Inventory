@@ -28,6 +28,17 @@ Route::group(['middleware' => ['prevent-back-history']], function()
 Route::get('user/deactivateUser', 'UserController@deactivateUser')->name('user/deactivateUser');
 Route::get('user/reactivateUser', 'UserController@reactivateUser')->name('user/reactivateUser');
 
+Route::get('/clear', function() {
+
+    Artisan::call('cache:clear');
+    Artisan::call('config:clear');
+    Artisan::call('config:cache');
+    Artisan::call('view:clear');
+ 
+    return "<h1>Cleared!</h1>";
+ 
+ });
+
 Route::group(['middleware' => ['user_middleware']], function() //Group middleware for authenticated / logged-in users
 {
     Route::get('/logout', 'Auth\LoginController@logout');

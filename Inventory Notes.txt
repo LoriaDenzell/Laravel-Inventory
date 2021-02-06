@@ -5,27 +5,13 @@ BUGS:
 1. Failed form submissions are not returning old inputs
 2. Toastr does not work when redirecting (using routes) 
 
-1. Fix all Toastr into new function and messages
-
 ==================================================================================================================
 
 SYSTEM CHANGES: 
 
-UserController index - Added query for active and inactive users
-Added Content (CMS) migration, model, routes and controller
-Added Addons migration, model, routes and controller
-HomeController added content (CMS) in RecentActivities()
-Added Content (CMS) and Product Addons in sidebar and changed some icons of other sidebar items
-Fixed user activities descending order 
-Added content retrieval in SaleController Show
-Fixed Edit/update UI for Sales Order
-Added CSV Export option for admin user type only (product, purchase and sales)
-Added record limit of every table depends on the CMS configuration. Default 1000 records if not set yet.
-Added Bulk Deactivate and Reactivate feature for Sales Orders, Purchase Orders, Categories, Products, Addons
-Fixed Customer's Orders Quantity in Sales Summary Page
-Create Forms in Modal Boxes from pages for Addons, Category, User, Products, Purchase & Sales
-Fixed Percentages Calculator
-Added Calendar Feature Overview (Temporary/To be finalized)
+Sales Order View hide Product Addons Header if no addons for specific Sales Order 
+Added alternative values if content (CMS) is not yet configured 
+Fixed Sales Order required fields 
 
 CREDENTIALS: 
 

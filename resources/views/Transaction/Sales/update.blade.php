@@ -150,8 +150,9 @@
                                                 placeholder = "Quantity" 
                                                 onkeyup="this.value=this.value.replace(/[^\d]/,'')" required>
                                         </div>
+                                        @if(count($addons) > 0 && isset($sales_addons[$i]))
                                         <div class="col-sm-2">
-                                        <input type="hidden" readonly = "true" value="{{$sales_addons[$i]->id}}" class="form-control" name = "id_raw_addon[]">
+                                            <input type="hidden" readonly = "true" value="{{$sales_addons[$i]->id}}" class="form-control" name = "id_raw_addon[]">
                                             <select class = "form-control" id = "addons" name = "addons[]">
                                                 @foreach($addons as $addon)
                                                     <option value="{{$addon->id}}" {{$sales_addons[$i]->addon_id == $addon->id  ? 'selected' : ''}}>{{$addon->addon_name}}</option>
@@ -167,6 +168,7 @@
                                                 placeholder = "Qty" 
                                                 onkeyup="this.value=this.value.replace(/[^\d]/,'')">
                                         </div>
+                                        @endif
                                         @if(@count($salesD) == 1)
                                             <div class = "col-sm-1">
                                                 <a href = "javascript:void(0)" class = "btn btn-primary add_Button" title = "Add Row"><i class = "fas fa-plus"></i></a>

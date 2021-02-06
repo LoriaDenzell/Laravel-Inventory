@@ -27,7 +27,7 @@
           <div class="row">
             <div class="col-12">
               <h4>
-                {{ $content->org_name }}
+                {{ $content->org_name ?? 'InvSys Admin'}}
                 <small class="float-right">Date: {{ date('d F y', strtotime($data->date)) }}</small>
               </h4>
             </div>
@@ -37,9 +37,9 @@
             <div class="col-sm-6 invoice-col">
               <address>
                 <strong>{{$data->user_modify->first_name ?? ''}} {{$data->user_modify->last_name ?? ''}}</strong><br>
-                {{ $content->org_address }} <br>
-                Phone: {{ $content->org_contact  }} <br>
-                Email: {{ $content->org_email  }}
+                {{ $content->org_address ?? 'N/A' }} <br>
+                Phone: {{ $content->org_contact ?? 'N/A' }} <br>
+                Email: {{ $content->org_email ?? 'loriadenzell@gmail.com'}}
               </address>
             </div>
             <div class="col-sm-6 invoice-col">

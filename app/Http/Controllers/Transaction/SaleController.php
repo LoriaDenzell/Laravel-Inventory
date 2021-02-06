@@ -324,30 +324,13 @@ class SaleController extends Controller
         }
 
         toastr()->success('Sales Order updated successfully.');
-        return view('Transaction.Sales.index');
+        $detail_count = 0;
+        $currentDateTime = Carbon\Carbon::now();
+        $invoice_no = preg_replace('/[^0-9,.]/', '', $currentDateTime->toDateTimeString());
+        $addons = Addon::orderBy('addon_name')->where('addon_active', '=', 1)->get() ?? null;
+
+        return view('Transaction.Sales.index', compact('detail_count', 'invoice_no', 'addons'));
     }
-
-    /*public function deleteSalesOrder(Request $request) 
-    {
-        $id = $request->input('id');
-        $data = SalesH::find($id);
-        $isAllDeleted = true;
-
-        $sales_details = SalesD::where('id_sales', $data->id);
-
-        foreach($sales_details as $sale):
-            if(!$sale->delete())
-                $isAllDeleted = false;
-        endforeach;
-
-        if($data->delete() && $isAllDeleted){
-            Toastr::success('Sales Order has been permanently deleted.', 'Success');
-            return new JsonResponse(['status'=>true]);
-        }else{
-            Toastr::error('Failed to delete Sales Order.', 'Error');
-            return new JsonResponse(['status'=>false, 'url'=> route('sales.index')]);
-        }
-    }*/
 
     public function deactivate($id)
     {

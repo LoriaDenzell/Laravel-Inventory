@@ -88,7 +88,7 @@ class ProductController extends Controller
                                         ->first()) + 1;
 
             toastr()->success('Product created successfully.');
-            return view('category.index', compact('latestProductCode', 'categories'));
+            return view('product.index', compact('latestProductCode', 'categories'));
         }
         
         toastr()->success('Failed to create a new Product');
@@ -373,12 +373,7 @@ class ProductController extends Controller
     }
 
     public function datatable_product(){
-        $content = Content::first();
-
-        $data = Product::select('products.*')
-                        ->with(['product_category'])
-                        ->where('products.product_active', '=', 1)
-                        ->get();
+        $data = Product::with(['product_category'])->where('product_active', 1)->get();
         
         return Datatables::of($data)
                 ->editColumn('product_selling_price', function($data){

@@ -230,11 +230,7 @@ class CategoryController extends Controller
     public function datatable_category()
     {
         $content = Content::first();
-        $data = Category::select('category.*')
-                        ->where('categories.category_status', '=', 1)
-                        ->orderBy('id', 'desc')
-                        ->take($content->max_activities ?? 1000)
-                        ->get();
+        $data = Category::where('category_status', 1)->orderBy('id', 'desc')->get();
 
         return Datatables::of($data)
                 ->editColumn('category_name', function($data){
