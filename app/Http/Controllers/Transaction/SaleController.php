@@ -106,7 +106,7 @@ class SaleController extends Controller
         endforeach;
 
         //Addons
-        if(isset($_POST['addon_total'])){
+        if(array_sum(['addon_total']) > 0){
             for($i=0; $i<count($_POST['addons']); $i++){
                 
                 $addon = new SaleAddon();

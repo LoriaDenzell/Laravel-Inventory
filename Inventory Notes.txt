@@ -7,12 +7,6 @@ BUGS:
 
 ==================================================================================================================
 
-SYSTEM CHANGES: 
-
-- Fixed Division by Zero error in dashboard (home)
-- Fixed Addon Quantity not recorded in sales order
-- Included Addons in Total revenue for sales order
-
 CREDENTIALS: 
 
 infinityfree
