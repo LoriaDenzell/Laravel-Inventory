@@ -288,7 +288,7 @@ class HomeController extends Controller
         $PreviousMonthProfitTotal = abs($PreviousMonthRevenueTotal-$PreviousMonthExpenseTotal);
         $AverageDailyNetProfit = count($MonthlyRevenue) > 0 ? round($CurrentMonthProfitTotal/count($MonthlyRevenue)) : null;
 
-        $PreviousAverageDailyNetProfit = count($MonthlyRevenue) > 0 ? round(abs($CurrentMonthProfitTotal-$PreviousMonthProfitTotal)/count($PreviousMonthlyRevenue)) : null;
+        $PreviousAverageDailyNetProfit = count($MonthlyRevenue) > 0 && count($PreviousMonthlyRevenue) > 0 ? round(abs($CurrentMonthProfitTotal-$PreviousMonthProfitTotal)/count($PreviousMonthlyRevenue)) : null;
         $CurrentMonthProfitPercentage = $this->percentageChangeCalculator($CurrentMonthRevenueTotal, $PreviousMonthRevenueTotal);  
         $CurrentMonthAverageProfitPercentage = $this->percentageChangeCalculator($AverageDailyNetProfit, $PreviousMonthRevenueTotal);  
         

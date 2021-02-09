@@ -216,8 +216,7 @@
                         name = "name_raw_product[]" 
                         value="{{ old('id_raw_product_1') }}"
                         placeholder = "Product Name"
-                        readonly="readonly" 
-                        required>
+                        readonly required>
               </div>
               <div class="col-sm-1">
                 <a href = "/transaction/sales/product/popup_media/1" 
@@ -259,7 +258,6 @@
                       class="form-control" 
                       id="addon_total_1" 
                       name = "addon_total[]" 
-                      value="{{ old('addon_total') }}"
                       placeholder = "Qty" 
                       onkeyup="this.value=this.value.replace(/[^\d]/,'')">
                 </div>
@@ -276,7 +274,7 @@
           <!-- MODAL FOOTER -->
           <div class="modal-footer">
             <button type="submit" class="btn btn-danger float-right" data-dismiss="modal">Cancel</button>
-            <button type="submit" class="btn btn-success float-right">Submit</button>
+            <button type="submit" id="createSales" class="btn btn-success float-right">Submit</button>
           </div>
 
         </div>
@@ -366,7 +364,7 @@
         $(wrapper).append(' <div class = "form-group row" id = "salesRow_'+X+'"> ' +
                 '<div class="col-sm-3">' +
                     '<input type="hidden" class="form-control" id="id_raw_product_'+X+'" name = "id_raw_product[]" readonly="readonly" value = {{ old("id_raw_product_'+X+'") }} required>' +
-                    '<input type="text" class="form-control" id="name_raw_product_'+X+'" name = "name_raw_product[]" placeholder = "Product Name"  value = {{ old("name_raw_product_'+X+'") }}>'+
+                    '<input type="text" class="form-control" id="name_raw_product_'+X+'" name = "name_raw_product[]" readonly="readonly" placeholder = "Product Name"  value = {{ old("name_raw_product_'+X+'") }}>'+
                 '</div>' +
                 '<div class="col-sm-1">' +
                     '<a href = "/transaction/sales/product/popup_media/'+X+'" class = "btn btn-info" title = "Product" data-toggle = "modal" data-target = "#modal-default">Product</a>' +

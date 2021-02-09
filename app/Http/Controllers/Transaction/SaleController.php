@@ -106,11 +106,10 @@ class SaleController extends Controller
         endforeach;
 
         //Addons
-        if(isset($_POST['addons'])){
+        if(isset($_POST['addon_total'])){
             for($i=0; $i<count($_POST['addons']); $i++){
-
+                
                 $addon = new SaleAddon();
-
                 $addon_price = Addon::select('addon_cost')->where('id', $_POST['addons'][$i])->first();
 
                 if($addon_price == null)
@@ -121,8 +120,8 @@ class SaleController extends Controller
 
                 $addon->addon_id = $_POST['addons'][$i];
                 $addon->sales_h = $data->id;
-                $addon->total_addon = $_POST['addon_total'][$i];
-                $addon->price = (int)$addon_price->addon_cost * (int)$_POST['addon_total'][$i];
+                $addon->total_addon = $_POST['addon_total'][$i] == "" ? 1 : $_POST['addon_total'][$i];
+                $addon->price = (int)$addon_price->addon_cost * $addon->total_addon;
                 $total = $total + $addon->price;
                 $addon->save();
             }
@@ -467,4 +466,5 @@ class SaleController extends Controller
   
         echo 'Sales Order/s successfully reaactivated.';
     }
+
 }

@@ -89,13 +89,14 @@
                   </tr>
                 <?php
                   foreach($addons as $add){
-                    $overAllTotal += $add->price;
+                    $subtotal = $add->total_addon * $add->addon->addon_cost;
+                    $overAllTotal += $subtotal;
                 ?>
                   <tr>
                     <td>{{$add->addon->addon_name}}</td>
                     <td>{{number_format($add->total_addon, 0, '.', ',') }}</td>
                     <td><span>&#8369;</span>{{number_format($add->addon->addon_cost, 0, '.', ',') }}</td>
-                    <td><span>&#8369;</span>{{number_format($add->price, 0, '.', ',') }}</td>
+                    <td><span>&#8369;</span><?php echo $subtotal; ?></td>
                   </tr>
                 <?php 
                     }

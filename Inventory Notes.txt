@@ -9,9 +9,9 @@ BUGS:
 
 SYSTEM CHANGES: 
 
-Sales Order View hide Product Addons Header if no addons for specific Sales Order 
-Added alternative values if content (CMS) is not yet configured 
-Fixed Sales Order required fields 
+- Fixed Division by Zero error in dashboard (home)
+- Fixed Addon Quantity not recorded in sales order
+- Included Addons in Total revenue for sales order
 
 CREDENTIALS: 
 
