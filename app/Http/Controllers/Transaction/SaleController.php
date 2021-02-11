@@ -35,7 +35,7 @@ class SaleController extends Controller
         $detail_count = 0;
         $currentDateTime = Carbon\Carbon::now();
         $invoice_no = preg_replace('/[^0-9,.]/', '', $currentDateTime->toDateTimeString());
-        $addons = Addon::orderBy('addon_name')->where('addon_active', '=', 1)->get() ?? null;
+        $addons = Addon::orderBy('addon_name')->where('addon_active', 1)->get() ?? null;
 
         return view('Transaction.Sales.index', compact('detail_count', 'invoice_no', 'addons'));
     }
@@ -106,7 +106,8 @@ class SaleController extends Controller
         endforeach;
 
         //Addons
-        if(array_sum(['addon_total']) > 0){
+        if(array_sum($_POST['addon_total']) > 0){
+            
             for($i=0; $i<count($_POST['addons']); $i++){
                 
                 $addon = new SaleAddon();

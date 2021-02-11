@@ -7,6 +7,10 @@ BUGS:
 
 ==================================================================================================================
 
+SYSTEM CHANGES: 
+
+- Fixed Addon not adding to SalesH
+
 CREDENTIALS: 
 
 infinityfree
