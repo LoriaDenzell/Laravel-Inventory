@@ -251,7 +251,7 @@
                     '<input type="text" class="form-control" id="name_raw_product_'+X+'" name = "name_raw_product[]" style="text-transform: uppercase" placeholder = "Product Name" required>'+
                 '</div>' +
                 '<div class="col-sm-3">' +
-                    '<input type="number" class="form-control" id="price_'+X+'" name = "price[]" placeholder = "Product Price" onkeyup="this.value=this.value.replace(/[\d]/, '+0+')" required>' +
+                    '<input type="number" class="form-control" id="price_'+X+'" name = "price[]" placeholder = "Product Price" onkeyup="this.value=this.value.replace(/[\d]/, '+0+')" min="1" required>' +
                 '</div>' +
                 '<div class = "col-sm-2">' +
                     '<a href = "javascript:void(0)" class = "btn btn-danger remove" title = "Delete"><i class = "fas fa-minus"></i></a>' +
@@ -261,10 +261,8 @@
     });
 
     $(wrapper).on('click', '.remove', function(e){
-        if(confirm("Do you want to delete this row?")){
-            e.preventDefault();
-            $(this).parent().parent().remove();
-        }
+      e.preventDefault();
+      $(this).parent().parent().remove();
     });
 
     $("#purchase_tbl").DataTable({

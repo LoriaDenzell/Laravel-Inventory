@@ -239,7 +239,7 @@
                     class="form-control" 
                     id="total_1" 
                     name = "total[]" 
-                    value="{{ old('total_1') }}"
+                    value="{{ old('total_1') ?? '1' }}"
                     placeholder = "Qty" 
                     min = "1"
                     onkeyup="this.value=this.value.replace(/[^\d]/,'')" required>
@@ -362,41 +362,47 @@
     $(addButton).click(function(){
         X++;
         $(wrapper).append(' <div class = "form-group row" id = "salesRow_'+X+'"> ' +
-                '<div class="col-sm-3">' +
-                    '<input type="hidden" class="form-control" id="id_raw_product_'+X+'" name = "id_raw_product[]" readonly="readonly" value = {{ old("id_raw_product_'+X+'") }} required>' +
-                    '<input type="text" class="form-control" id="name_raw_product_'+X+'" name = "name_raw_product[]" readonly="readonly" placeholder = "Product Name"  value = {{ old("name_raw_product_'+X+'") }}>'+
-                '</div>' +
-                '<div class="col-sm-1">' +
-                    '<a href = "/transaction/sales/product/popup_media/'+X+'" class = "btn btn-info" title = "Product" data-toggle = "modal" data-target = "#modal-default">Product</a>' +
-                '</div>' +
-                '<div class="col-sm-2">' +
-                    '<input type="text" class="form-control" id="price_'+X+'" value="{{ old("price_'+X+'") }}" name = "price[]" placeholder = "Price" required>' +
-                '</div>' +
-                '<div class="col-sm-1">' +
-                    '<input type="text" class="form-control" id="total_'+X+'" value="{{ old("total_'+X+'") }}" name = "total[]" placeholder = "Qty" required>' +
-                '</div>' +
-                @if(count($addons) > 0)
-                '<div class="col-sm-2">' +
-                    '<select class = "form-control" id = "addons_'+X+'" name = "addons[]">' +
-                            '<option selected disabled>Choose Addons</option>' +
-                                @foreach($addons as $addon)
-                                    '<option value="{{$addon->id}}">{{$addon->addon_name}}</option>' +
-                                @endforeach
-                        '</select>' +
-                '</div>' +
-                '<div class = "col-sm-1">' +
-                    '<input type="number" class="form-control" id="addon_total_'+X+'" name = "addon_total[]" placeholder = "Qty">' + 
-                '</div>' +
-                @endif
-                '<div class = "col-sm-1">' +
-                    '<a href = "javascript:void(0)" class = "btn btn-danger remove" title = "Delete"><i class = "fas fa-minus"></i></a>' +
-                '</div>' +
-                '<div class = "col-sm-1">' +
-                    '<strong id="subtotal_'+X+'"></strong>' +
-                '</div>' +
-            '</div>'
+          '<div class="col-sm-3">' +
+              '<input type="hidden" class="form-control" id="id_raw_product_'+X+'" name = "id_raw_product[]" readonly="readonly" value = {{ old("id_raw_product_'+X+'") }} required>' +
+              '<input type="text" class="form-control" id="name_raw_product_'+X+'" name = "name_raw_product[]" readonly="readonly" placeholder = "Product Name"  value = {{ old("name_raw_product_'+X+'") }}>'+
+          '</div>' +
+          '<div class="col-sm-1">' +
+              '<a href = "/transaction/sales/product/popup_media/'+X+'" class = "btn btn-info" title = "Product" data-toggle = "modal" data-target = "#modal-default">Product</a>' +
+          '</div>' +
+          '<div class="col-sm-2">' +
+              '<input type="text" class="form-control" id="price_'+X+'" value="{{ old("price_'+X+'") }}" name = "price[]" placeholder = "Price" required>' +
+          '</div>' +
+          '<div class="col-sm-1">' +
+              '<input type="number" class="form-control" id="total_'+X+'" value="{{ old("total_'+X+'") ?? "1" }}" name = "total[]" placeholder = "Qty" min= "1" required>' +
+          '</div>' +
+          @if(count($addons) > 0)
+          '<div class="col-sm-2">' +
+              '<select class = "form-control" id = "addons_'+X+'" name = "addons[]">' +
+                      '<option selected disabled>Choose Addons</option>' +
+                          @foreach($addons as $addon)
+                              '<option value="{{$addon->id}}">{{$addon->addon_name}}</option>' +
+                          @endforeach
+                  '</select>' +
+          '</div>' +
+          '<div class = "col-sm-1">' +
+              '<input type="number" class="form-control" id="addon_total_'+X+'" name = "addon_total[]" placeholder = "Qty">' + 
+          '</div>' +
+          @endif
+          '<div class = "col-sm-1">' +
+              '<a href = "javascript:void(0)" class = "btn btn-danger remove" title = "Delete"><i class = "fas fa-minus"></i></a>' +
+          '</div>' +
+          '<div class = "col-sm-1">' +
+              '<strong id="subtotal_'+X+'"></strong>' +
+          '</div>' +
+      '</div>'
         );
 
+        /*$("[id^='id_raw_product_']").change(function() {
+          var qtyElement = $(this).closest(".row").find("[id^='total_']");
+          qtyElement.val(1);
+          console.log('changed product');
+        });*/
+        
         $("[id^='addons_']").change(function() {
           var addonElement = $(this).closest(".row").find("[id^='addon_total_']");
           addonElement.prop("required",true);
@@ -411,10 +417,8 @@
     });
 
     $(wrapper).on('click', '.remove', function(e){
-      if(confirm("Do you want to delete this row?")){
-        e.preventDefault();
-        $(this).parent().parent().remove();
-      }
+      e.preventDefault();
+      $(this).parent().parent().remove();
     });
 
     $('#modal-default').bind('show.bs.modal', function(e){

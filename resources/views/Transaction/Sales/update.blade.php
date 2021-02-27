@@ -233,7 +233,7 @@
                         '<input type="text" class="form-control" id="price_'+X+'" value="{{ old("price_'+X+'") }}" name = "price[]" placeholder = "Price" required>' +
                     '</div>' +
                     '<div class="col-sm-1">' +
-                        '<input type="text" class="form-control" id="total_'+X+'" value="{{ old("total_'+X+'") }}" name = "total[]" placeholder = "Qty" required>' +
+                        '<input type="number" class="form-control" id="total_'+X+'" value="{{ old("total_'+X+'") }}" name = "total[]" placeholder = "Qty" min= "1" required>' +
                     '</div>' +
                     '<div class="col-sm-2">' +
                         '<select class = "form-control" id = "addons" name = "addons[]">' +
@@ -257,10 +257,8 @@
         });
 
         $(wrapper).on('click', '.remove', function(e){
-            if(confirm("Do you want to delete this row?")){
-                e.preventDefault();
-                $(this).parent().parent().remove();
-            }
+            e.preventDefault();
+            $(this).parent().parent().remove();
         });
 
         $('#date').datepicker({

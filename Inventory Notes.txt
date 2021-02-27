@@ -8,8 +8,11 @@ BUGS:
 ==================================================================================================================
 
 SYSTEM CHANGES: 
-
-- Fixed Addon not adding to SalesH
+ 
+- Remove confirmation alert if row was removed in Edit & Create Sales Order
+- Remove confirmation alert if row was removed in Edit & Create Purchase Order
+- Changed input field quantity from 'text' to 'number' in Edit & Create Sales Order
+- Default Quantity input minimum value for each product in Sales Order set to 1
 
 CREDENTIALS: 
 

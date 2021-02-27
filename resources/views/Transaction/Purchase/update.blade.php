@@ -167,10 +167,8 @@
         });
 
         $(wrapper).on('click', '.remove', function(e){
-            if(confirm("Do you want to delete this row?")){
-                e.preventDefault();
-                $(this).parent().parent().remove();
-            }
+            e.preventDefault();
+            $(this).parent().parent().remove();
         });
 
         $('#date').datepicker({
