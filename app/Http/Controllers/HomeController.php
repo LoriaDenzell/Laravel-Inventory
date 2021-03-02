@@ -664,7 +664,7 @@ class HomeController extends Controller
         $PercentageChange = 0;
 
         if($YesterdayValue != null && $TodayValue != null){
-            $PercentageChange = round((($YesterdayValue - $TodayValue) / $TodayValue) * 100, 0);
+            $PercentageChange = round(abs((($YesterdayValue - $TodayValue) / $TodayValue)) * 100, 0);
         }else{
             $PercentageChange = null;
         }

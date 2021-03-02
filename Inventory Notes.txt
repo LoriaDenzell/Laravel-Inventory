@@ -5,14 +5,16 @@ BUGS:
 1. Failed form submissions are not returning old inputs
 2. Toastr does not work when redirecting (using routes) 
 
+To be Added: 
+
+- Add option for products to be excluded in Sales report
+
 ==================================================================================================================
 
 SYSTEM CHANGES: 
- 
-- Remove confirmation alert if row was removed in Edit & Create Sales Order
-- Remove confirmation alert if row was removed in Edit & Create Purchase Order
-- Changed input field quantity from 'text' to 'number' in Edit & Create Sales Order
-- Default Quantity input minimum value for each product in Sales Order set to 1
+
+- Changed Toastr Notification Timeout duration from 5 seconds to 3 seconds
+- Changed Dashboard User Interface
 
 CREDENTIALS: 
 

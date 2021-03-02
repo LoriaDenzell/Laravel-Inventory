@@ -58,7 +58,7 @@
   <div class="container-fluid">
     <div class="card card-info">
       <div class="card-header">
-        <h3 class="card-title"><i class="far fa-file-alt"></i> Daily Operations Summary Report <b>({{ $dateQuery }}) </b>vs <b> ({{$yesterday}}) </b></h3>
+        <h3 class="card-title"><i class="far fa-file-alt"></i> Operations Summary Report <b>(Current Date: {{ $dateQuery }}) </b>vs <b> (Previous Date: {{$yesterday}}) </b></h3>
         <div class="card-tools">
           <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
           </button>
@@ -207,7 +207,7 @@
           <div class="col-md-3">
             <div class="card bg-gradient-primary">
               <div class="card-header">
-                <h3 class="card-title">Highest sales from a single Order</h3>
+                <h3 class="card-title">Highest Sales:</h3>
 
                 <div class="card-tools">
                   <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
@@ -230,7 +230,7 @@
           <div class="col-md-3">
             <div class="card bg-gradient-success">
               <div class="card-header">
-                <h3 class="card-title">Highest revenue from a customer</h3>
+                <h3 class="card-title">Highest Revenue:</h3>
 
                 <div class="card-tools">
                   <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
@@ -253,7 +253,7 @@
           <div class="col-md-3">
             <div class="card bg-gradient-danger">
               <div class="card-header">
-                <h3 class="card-title">Highest single expense from expenses/purchases</h3>
+                <h3 class="card-title">Highest Expense:</h3>
 
                 <div class="card-tools">
                   <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
@@ -277,7 +277,7 @@
           <div class="col-md-3">
             <div class="card bg-gradient-warning">
               <div class="card-header">
-                <h3 class="card-title">Net Profit <br>(Revenue - Expenses)</h3>
+                <h3 class="card-title">Net Profit</h3>
 
                 <div class="card-tools">
                   <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
@@ -297,320 +297,6 @@
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="border-top my-3"></div>
-
-    <div class="row">
-      <div class="col-md-12">
-        <div class="card card-success">
-          <div class="card-header">
-            <h3 class="card-title"><i class="fas fa-chart-line"></i> Top 10 Best Sellers </h3>
-
-            <div class="card-tools">
-              <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
-              </button>
-              <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
-            </div>
-          </div>
-          <div class="card-body ">
-          @if(count($ValuesArray) > 0)
-            <div class="barChart1">
-              <canvas id="barChart1"></canvas>
-            </div>
-          </div>
-          <div class="card-footer">
-            <div class="row">
-              <?php
-
-              for($p=0; $p<3; $p++){
-                echo"
-                <div class='col-sm-4 col-6'>
-                  <div class='description-block border-right'>
-                    <h5 class='description-header'>". $ValuesArray[$p]. "</h5>
-                    <span class='description-text'>". $NamesArray[$p]. "</span>".
-                  "</div>".
-                  "</div>";
-              }
-              ?>
-            </div>
-            @else 
-              <div class="alert alert-warning alert-dismissible">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                <h4><i class="fas fa-exclamation-triangle"></i> Warning</h4>
-                Insufficient data - Bar chart will not be displayed for now.
-              </div>
-            @endif
-          </div>
-        </div>
-      </div>
-    </div>
-    </div>
-
-    <div class="border-top my-3"></div>
-
-    <div class = "row">
-        <!-- LEFT -->
-        <div class="col-md-6">
-            <div class="card card-danger">
-                <div class="card-header">
-                    <h3 class="card-title">Products Sold on Product Categories</h3>
-
-                    <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
-                    </button>
-                        <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
-                    </div>
-                </div>
-               
-                <div class="card-body">
-                  @if(count($NamesArray) > 0 || count($ValuesArray) > 0)
-                    <canvas id="donutChart" style="min-height: 250px; height: 300px; max-height: 350px; max-width: 100%;"></canvas>
-                  @else 
-                    <div class="alert alert-warning alert-dismissible">
-                      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                      <h4><i class="fas fa-exclamation-triangle"></i> Warning</h4>
-                      Insufficient data - Donut chart will not be displayed for now.
-                    </div>
-                  @endif
-                </div>
-            </div>
-        </div>
-
-        <!-- RIGHT -->
-        @role('A')
-        <div class="col-md-6">
-            <div class="card card-primary">
-                <div class="card-header">
-                    <h3 class="card-title">
-                        <i class="far fa-chart-bar"></i>
-                        Volume of Orders by Day
-                    </h3>
-                    <div class="card-tools">
-                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                        <i class="fas fa-minus"></i>
-                    </button>
-                    <button type="button" class="btn btn-tool" data-card-widget="remove">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="card-body">
-              @if(count($DayRecords) > 0)
-                <div id="order_vol_day" style="height: 300px;"></div>
-              @else
-              <div class="alert alert-warning alert-dismissible">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                <h4><i class="fas fa-exclamation-triangle"></i> Warning</h4>
-                Insufficient data - Bar chart will not be displayed for now.
-              </div>
-              @endif
-            </div>
-        </div>
-        @endrole
-    </div>
-    </div>
-
-    <div class="border-top my-3"></div>
-
-    <div class = "row">
-      @role('A')
-      <div class="col-md-6">
-        <div class="card card-info">
-          <div class="card-header">
-            <h3 class="card-title"><i class="fas fa-chart-line"></i> Revenue Vs. Expenses (All Time)</h3>
-
-            <div class="card-tools">
-              <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
-              </button>
-              <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
-            </div>
-          </div>
-          <div class="card-body ">
-            @if($Active_Products > 0 || $Inactive_Products > 0)
-            <div class="barChart_sales_purchase">
-              <canvas id="barChart_sales_purchase"></canvas>
-            </div>
-            @else 
-              <div class="alert alert-warning alert-dismissible">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                <h4><i class="fas fa-exclamation-triangle"></i> Warning</h4>
-                Insufficient data - Bar chart will not be displayed for now.
-              </div>
-            @endif
-          </div>
-        </div>
-      </div>
-      @endrole
-
-      <!-- RIGHT -->
-      @role('A')
-      <div class="col-md-6">
-        <div class="card card-danger">
-          <div class="card-header">
-            <h3 class="card-title"><i class="fas fa-chart-pie"></i> Products By Status</h3>
-
-            <div class="card-tools">
-              <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
-              </button>
-              <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
-            </div>
-          </div>
-          <div class="card-body">
-            @if($Active_Products > 0 || $Inactive_Products > 0)
-              <canvas id="pieChart1"></canvas>
-            @else 
-              <div class="alert alert-warning alert-dismissible">
-                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                <h4><i class="fas fa-exclamation-triangle"></i> Warning</h4>
-                Insufficient data - Bar chart will not be displayed for now.
-              </div>
-            @endif
-          </div>
-        </div>
-      </div>
-      @endrole
-    </div>
-    
-    <div class="border-top my-3"></div>
-
-    <div class="row">
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-header bg-info">
-            <h3 class="card-title"><i class="fa fa-users" aria-hidden="true"></i> Top 5 Frequent Customers</h3>
-            <div class="card-tools">
-              <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                <i class="fas fa-minus"></i>
-              </button>
-              <button type="button" class="btn btn-tool" data-card-widget="remove">
-                <i class="fas fa-times"></i>
-              </button>
-            </div>
-          </div>
-          <!-- /.card-header -->
-          <div class="card-body">
-          <?php 
-            if(count($MostLoyalCustomer) >= 5){
-          ?>
-            <table class="table table-bordered">
-              <thead>                  
-                <tr>
-                  <th style="width: 10px">#</th>
-                  <th>Customer Name</th>
-                  <th># of Purchases</th>
-                  <th style="width: 50px">Total revenue earned</th>
-                </tr>
-              </thead>
-              <tbody>
-                <?php
-        
-                    for($x=0; $x<count($MostLoyalCustomer); $x++){
-                      echo "<tr>";
-                      echo "<td>".$x."</td>";
-                      echo "<td>".strtoupper($MostLoyalCustomer[$x]->customer)."</td>"; 
-                      echo "<td>".number_format($MostLoyalCustomer[$x]->count, 0, '.', ',')."</td>";
-                      echo "<td>".number_format($MostLoyalCustomer[$x]->total, 0, '.', ',')."</td>";
-                      echo "</tr>";
-                    }
-                  }
-                  else
-                  {
-                    ?>
-                    <div class="alert alert-warning alert-dismissible">
-                      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                      <h4><i class="fas fa-exclamation-triangle"></i> Warning</h4>
-                      Insufficient data - Data Table will not be displayed for now.
-                    </div>
-                    <?php 
-                  }
-                ?>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-      <div class = "col-md-6">
-        <div class="card">
-          <div class="card-header bg-success">
-            <h3 class="card-title"><i class="fab fa-dropbox"></i> Recently Added Products</h3>
-
-            <div class="card-tools">
-              <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                <i class="fas fa-minus"></i>
-              </button>
-              <button type="button" class="btn btn-tool" data-card-widget="remove">
-                <i class="fas fa-times"></i>
-              </button>
-            </div>
-          </div>
-          <!-- /.card-header -->
-          <div class="card-body p-0">
-            <ul class="products-list product-list-in-card pl-2 pr-2">
-              <?php 
-                if(count($RecentlyAddedProducts) >= 5){
-                  for($x=0; $x<count($RecentlyAddedProducts); $x++){
-                    ?>
-                    <li class='item'>
-                      <div class='product-img'>
-                        <?php 
-                          if($RecentlyAddedProducts[$x]->product_image == null){
-                        ?>
-                          <img src="{{asset('/storage/images/default-150x150.png')}}" alt='Product Image' class='img-size-50'>
-                        <?php 
-                          }else{
-                        ?>
-                          <img src="{{asset('/storage/images/'.$RecentlyAddedProducts[$x]->product_image)}}" alt='Product Image' class='img-size-50'>
-                        <?php 
-                          }
-                        ?>
-                      </div>
-                      <div class='product-info'>
-                        <a href="{{url('master/product/'.$RecentlyAddedProducts[$x]->product_id)}}" class='product-title-".$x."'> {{ $RecentlyAddedProducts[$x]->product_name }}
-                        <span class='badge badge-success float-right'>{{ number_format($RecentlyAddedProducts[$x]->product_selling_price, 0, '.', ',') }}</span></a>
-                        <?php 
-                          if($RecentlyAddedProducts[$x]->product_information != null){
-                            $productDescription = str_ireplace("\r\n", ',', $RecentlyAddedProducts[$x]->product_information);
-                            $productDescription = Str::limit($productDescription, 25, '...');
-                        ?>
-                            <span class='product-description'>
-                              <?php echo $productDescription; ?>
-                            </span>
-                        </a>
-                        <?php
-                          }else{
-                        ?>
-                          <span class='product-description'>Data not Available</span></a>
-                        <?php
-                        }
-                        ?>
-                        </span>
-                      </div>
-                    </li>
-                  <?php 
-                  }
-                }
-                else
-                {
-                ?>
-                  <br>
-                    <div class="alert alert-warning alert-dismissible">
-                      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                      <h4><i class="fas fa-exclamation-triangle"></i> Warning</h4>
-                      Insufficient data - Data Table will not be displayed for now.
-                    </div>
-                  <?php
-                }
-              ?>
-            </ul>
-          </div>
-          <!-- /.card-body -->
-          <div class="card-footer text-center">
-            <a href="{{ route('product.index')}}" class="uppercase">View All Products</a>
-          </div>
-          <!-- /.card-footer -->
         </div>
       </div>
     </div>
@@ -951,6 +637,320 @@
       </div>
       @endrole
     </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card card-success">
+          <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-chart-line"></i> Top 10 Best Sellers </h3>
+
+            <div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+              </button>
+              <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
+            </div>
+          </div>
+          <div class="card-body ">
+          @if(count($ValuesArray) > 0)
+            <div class="barChart1">
+              <canvas id="barChart1"></canvas>
+            </div>
+          </div>
+          <div class="card-footer">
+            <div class="row">
+              <?php
+
+              for($p=0; $p<3; $p++){
+                echo"
+                <div class='col-sm-4 col-6'>
+                  <div class='description-block border-right'>
+                    <h5 class='description-header'>". $ValuesArray[$p]. "</h5>
+                    <span class='description-text'>". $NamesArray[$p]. "</span>".
+                  "</div>".
+                  "</div>";
+              }
+              ?>
+            </div>
+            @else 
+              <div class="alert alert-warning alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="fas fa-exclamation-triangle"></i> Warning</h4>
+                Insufficient data - Bar chart will not be displayed for now.
+              </div>
+            @endif
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <div class="border-top my-3"></div>
+
+    <div class = "row">
+        <!-- LEFT -->
+        <div class="col-md-6">
+            <div class="card card-danger">
+                <div class="card-header">
+                    <h3 class="card-title">Products Sold on Product Categories</h3>
+
+                    <div class="card-tools">
+                        <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+                    </button>
+                        <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
+                    </div>
+                </div>
+               
+                <div class="card-body">
+                  @if(count($NamesArray) > 0 || count($ValuesArray) > 0)
+                    <canvas id="donutChart" style="min-height: 250px; height: 300px; max-height: 350px; max-width: 100%;"></canvas>
+                  @else 
+                    <div class="alert alert-warning alert-dismissible">
+                      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                      <h4><i class="fas fa-exclamation-triangle"></i> Warning</h4>
+                      Insufficient data - Donut chart will not be displayed for now.
+                    </div>
+                  @endif
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT -->
+        @role('A')
+        <div class="col-md-6">
+            <div class="card card-primary">
+                <div class="card-header">
+                    <h3 class="card-title">
+                        <i class="far fa-chart-bar"></i>
+                        Volume of Orders by Day
+                    </h3>
+                    <div class="card-tools">
+                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                        <i class="fas fa-minus"></i>
+                    </button>
+                    <button type="button" class="btn btn-tool" data-card-widget="remove">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="card-body">
+              @if(count($DayRecords) > 0)
+                <div id="order_vol_day" style="height: 300px;"></div>
+              @else
+              <div class="alert alert-warning alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="fas fa-exclamation-triangle"></i> Warning</h4>
+                Insufficient data - Bar chart will not be displayed for now.
+              </div>
+              @endif
+            </div>
+        </div>
+        @endrole
+    </div>
+    </div>
+
+    <div class="border-top my-3"></div>
+
+    <div class = "row">
+      @role('A')
+      <div class="col-md-6">
+        <div class="card card-info">
+          <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-chart-line"></i> Revenue Vs. Expenses (All Time)</h3>
+
+            <div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+              </button>
+              <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
+            </div>
+          </div>
+          <div class="card-body ">
+            @if($Active_Products > 0 || $Inactive_Products > 0)
+            <div class="barChart_sales_purchase">
+              <canvas id="barChart_sales_purchase"></canvas>
+            </div>
+            @else 
+              <div class="alert alert-warning alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="fas fa-exclamation-triangle"></i> Warning</h4>
+                Insufficient data - Bar chart will not be displayed for now.
+              </div>
+            @endif
+          </div>
+        </div>
+      </div>
+      @endrole
+
+      <!-- RIGHT -->
+      @role('A')
+      <div class="col-md-6">
+        <div class="card card-danger">
+          <div class="card-header">
+            <h3 class="card-title"><i class="fas fa-chart-pie"></i> Products By Status</h3>
+
+            <div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="collapse"><i class="fas fa-minus"></i>
+              </button>
+              <button type="button" class="btn btn-tool" data-card-widget="remove"><i class="fas fa-times"></i></button>
+            </div>
+          </div>
+          <div class="card-body">
+            @if($Active_Products > 0 || $Inactive_Products > 0)
+              <canvas id="pieChart1"></canvas>
+            @else 
+              <div class="alert alert-warning alert-dismissible">
+                <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                <h4><i class="fas fa-exclamation-triangle"></i> Warning</h4>
+                Insufficient data - Bar chart will not be displayed for now.
+              </div>
+            @endif
+          </div>
+        </div>
+      </div>
+      @endrole
+    </div>
+    
+    <div class="border-top my-3"></div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header bg-info">
+            <h3 class="card-title"><i class="fa fa-users" aria-hidden="true"></i> Top 5 Frequent Customers</h3>
+            <div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                <i class="fas fa-minus"></i>
+              </button>
+              <button type="button" class="btn btn-tool" data-card-widget="remove">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body">
+          <?php 
+            if(count($MostLoyalCustomer) >= 5){
+          ?>
+            <table class="table table-bordered">
+              <thead>                  
+                <tr>
+                  <th style="width: 10px">#</th>
+                  <th>Customer Name</th>
+                  <th># of Purchases</th>
+                  <th style="width: 50px">Total revenue earned</th>
+                </tr>
+              </thead>
+              <tbody>
+                <?php
+        
+                    for($x=0; $x<count($MostLoyalCustomer); $x++){
+                      echo "<tr>";
+                      echo "<td>".$x."</td>";
+                      echo "<td>".strtoupper($MostLoyalCustomer[$x]->customer)."</td>"; 
+                      echo "<td>".number_format($MostLoyalCustomer[$x]->count, 0, '.', ',')."</td>";
+                      echo "<td>".number_format($MostLoyalCustomer[$x]->total, 0, '.', ',')."</td>";
+                      echo "</tr>";
+                    }
+                  }
+                  else
+                  {
+                    ?>
+                    <div class="alert alert-warning alert-dismissible">
+                      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                      <h4><i class="fas fa-exclamation-triangle"></i> Warning</h4>
+                      Insufficient data - Data Table will not be displayed for now.
+                    </div>
+                    <?php 
+                  }
+                ?>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div class = "col-md-6">
+        <div class="card">
+          <div class="card-header bg-success">
+            <h3 class="card-title"><i class="fab fa-dropbox"></i> Recently Added Products</h3>
+
+            <div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                <i class="fas fa-minus"></i>
+              </button>
+              <button type="button" class="btn btn-tool" data-card-widget="remove">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+          </div>
+          <!-- /.card-header -->
+          <div class="card-body p-0">
+            <ul class="products-list product-list-in-card pl-2 pr-2">
+              <?php 
+                if(count($RecentlyAddedProducts) >= 5){
+                  for($x=0; $x<count($RecentlyAddedProducts); $x++){
+                    ?>
+                    <li class='item'>
+                      <div class='product-img'>
+                        <?php 
+                          if($RecentlyAddedProducts[$x]->product_image == null){
+                        ?>
+                          <img src="{{asset('/storage/images/default-150x150.png')}}" alt='Product Image' class='img-size-50'>
+                        <?php 
+                          }else{
+                        ?>
+                          <img src="{{asset('/storage/images/'.$RecentlyAddedProducts[$x]->product_image)}}" alt='Product Image' class='img-size-50'>
+                        <?php 
+                          }
+                        ?>
+                      </div>
+                      <div class='product-info'>
+                        <a href="{{url('master/product/'.$RecentlyAddedProducts[$x]->product_id)}}" class='product-title-".$x."'> {{ $RecentlyAddedProducts[$x]->product_name }}
+                        <span class='badge badge-success float-right'>{{ number_format($RecentlyAddedProducts[$x]->product_selling_price, 0, '.', ',') }}</span></a>
+                        <?php 
+                          if($RecentlyAddedProducts[$x]->product_information != null){
+                            $productDescription = str_ireplace("\r\n", ',', $RecentlyAddedProducts[$x]->product_information);
+                            $productDescription = Str::limit($productDescription, 25, '...');
+                        ?>
+                            <span class='product-description'>
+                              <?php echo $productDescription; ?>
+                            </span>
+                        </a>
+                        <?php
+                          }else{
+                        ?>
+                          <span class='product-description'>Data not Available</span></a>
+                        <?php
+                        }
+                        ?>
+                        </span>
+                      </div>
+                    </li>
+                  <?php 
+                  }
+                }
+                else
+                {
+                ?>
+                  <br>
+                    <div class="alert alert-warning alert-dismissible">
+                      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                      <h4><i class="fas fa-exclamation-triangle"></i> Warning</h4>
+                      Insufficient data - Data Table will not be displayed for now.
+                    </div>
+                  <?php
+                }
+              ?>
+            </ul>
+          </div>
+          <!-- /.card-body -->
+          <div class="card-footer text-center">
+            <a href="{{ route('product.index')}}" class="uppercase">View All Products</a>
+          </div>
+          <!-- /.card-footer -->
+        </div>
+      </div>
+    </div>
+
+    <div class="border-top my-3"></div>
 
     @role('A')
       <div class = "row">
