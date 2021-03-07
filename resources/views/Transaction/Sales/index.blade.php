@@ -191,7 +191,7 @@
               <div class = "col-sm-12  {{$errors->has('product_information') ? 'has-error' : ''}}">
                 <textarea name = "product_information" 
                         class = "form-control" 
-                        rows = "4"
+                        rows = "3"
                         value="{{ old('product_information') }}"
                         style="text-transform: uppercase"
                         ></textarea>
@@ -295,7 +295,7 @@
         </button>
       </div>
       <div class="modal-body">
-          
+      
       </div>
     </div>
   </div>
@@ -360,8 +360,8 @@
     var inputQtyLength = $('[id^=total_]').length;
 
     $(addButton).click(function(){
-        X++;
-        $(wrapper).append(' <div class = "form-group row" id = "salesRow_'+X+'"> ' +
+      X++;
+      $(wrapper).append(' <div class = "form-group row" id = "salesRow_'+X+'"> ' +
           '<div class="col-sm-3">' +
               '<input type="hidden" class="form-control" id="id_raw_product_'+X+'" name = "id_raw_product[]" readonly="readonly" value = {{ old("id_raw_product_'+X+'") }} required>' +
               '<input type="text" class="form-control" id="name_raw_product_'+X+'" name = "name_raw_product[]" readonly="readonly" placeholder = "Product Name"  value = {{ old("name_raw_product_'+X+'") }}>'+
@@ -395,47 +395,41 @@
               '<strong id="subtotal_'+X+'"></strong>' +
           '</div>' +
       '</div>'
-        );
-
-        /*$("[id^='id_raw_product_']").change(function() {
-          var qtyElement = $(this).closest(".row").find("[id^='total_']");
-          qtyElement.val(1);
-          console.log('changed product');
-        });*/
-        
-        $("[id^='addons_']").change(function() {
-          var addonElement = $(this).closest(".row").find("[id^='addon_total_']");
-          addonElement.prop("required",true);
-          addonElement.attr({"min" : 1});
-        });
+    );
+      
+      $("[id^='addons_']").change(function() {
+        var addonElement = $(this).closest(".row").find("[id^='addon_total_']");
+        addonElement.prop("required",true);
+        addonElement.attr({"min" : 1});
+      });
     });
 
-    $("[id^='addons_']").change(function() {
-      var addonElement = $(this).closest(".row").find("[id^='addon_total_']");
-      addonElement.prop("required",true);
-      addonElement.attr({"min" : 1});
-    });
+  $("[id^='addons_']").change(function() {
+    var addonElement = $(this).closest(".row").find("[id^='addon_total_']");
+    addonElement.prop("required",true);
+    addonElement.attr({"min" : 1});
+  });
 
-    $(wrapper).on('click', '.remove', function(e){
-      e.preventDefault();
-      $(this).parent().parent().remove();
-    });
+  $(wrapper).on('click', '.remove', function(e){
+    e.preventDefault();
+    $(this).parent().parent().remove();
+  });
 
-    $('#modal-default').bind('show.bs.modal', function(e){
-        var link = $(e.relatedTarget);
-        $(this).find(".modal-body").load(link.attr("href"));
-    });
+  $('#modal-default').bind('show.bs.modal', function(e){
+      var link = $(e.relatedTarget);
+      $(this).find(".modal-body").load(link.attr("href"));
+  });
 
-    $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
-        $($.fn.dataTable.tables(true)).DataTable()
-        .columns.adjust();
-    });
+  $('a[data-toggle="tab"]').on('shown.bs.tab', function(e){
+      $($.fn.dataTable.tables(true)).DataTable()
+      .columns.adjust();
+  });
 
-    $('#sales_trash').on('click', '.btn-danger[data-remote]', function (e) 
-    { 
-      e.preventDefault(); 
-      console.log('ok');
-    });
+  $('#sales_trash').on('click', '.btn-danger[data-remote]', function (e) 
+  { 
+    e.preventDefault(); 
+    console.log('ok');
+  });
   });
 
   function deactivateSalesData(dt){

@@ -380,8 +380,8 @@ class ProductController extends Controller
                     return intval($data->product_selling_price);
                 }) 
                 ->editColumn('product_name', function($data){
-                    $string_replace = str_ireplace("\r\n", ',', $data->product_name);
-                    return Str::limit($string_replace, 50, '...');
+                    $string_replace = Str::limit(str_ireplace("\r\n", ',', $data->product_name), 50, '...');
+                    return $string_replace;
                 })
                 ->editColumn('product_type', function($data){
 

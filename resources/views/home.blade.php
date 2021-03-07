@@ -440,9 +440,9 @@
                   <thead>
                     <tr>
                       <th>Date</th>
-                      <th>Sales</th>
+                      <th>No. of Orders / Sales</th>
+                      <th>Revenue</th>
                       <th>Net Profit</th>
-                      <th>No. of Orders</th>
                       <th>Expenses</th>
                     </tr>
                   </thead>
@@ -450,12 +450,23 @@
                   <?php 
                     if(isset($MonthlyRecords)){
                       for($i=0; $i<count($MonthlyRecords); $i++){
+                        $netProfitRec = $MonthlyRecords[$i]['sales_total']-$MonthlyRecords[$i]['expense_total'];
                         echo "<tr>";
                           echo "<td>". $MonthlyRecords[$i]['date'] ."</td>";
-                          echo "<td>". $MonthlyRecords[$i]['sales_total'] ."</td>";
-                          echo "<td>". $MonthlyRecords[$i]['revenue_total'] ."</td>";
-                          echo "<td>". $MonthlyRecords[$i]['expense_total'] ."</td>";
-                          echo "<td>". $MonthlyRecords[$i]['order_total'] ."</td>";
+                          echo "<td>". number_format($MonthlyRecords[$i]['order_total'], 0, '.', ',') ."</td>";
+                          echo "<td>". number_format($MonthlyRecords[$i]['sales_total'], 0, '.', ',') ."</td>";
+                          
+                          echo"<td>";
+
+                          if($netProfitRec < 1){
+                            echo "<span class='badge bg-danger'>".number_format($netProfitRec, 0, '.', ',') ."</span>";
+                          }else{
+                            echo "<span class='badge bg-success'>".number_format($netProfitRec, 0, '.', ',') ."</span>";
+                          }
+
+                          echo "</td>";
+
+                          echo "<td>". number_format($MonthlyRecords[$i]['expense_total'], 0, '.', ',') ."</td>";
                         echo "</tr>";
                       }
                     }else{
@@ -651,26 +662,10 @@
             </div>
           </div>
           <div class="card-body ">
-          @if(count($ValuesArray) > 0)
-            <div class="barChart1">
-              <canvas id="barChart1"></canvas>
-            </div>
-          </div>
-          <div class="card-footer">
-            <div class="row">
-              <?php
-
-              for($p=0; $p<3; $p++){
-                echo"
-                <div class='col-sm-4 col-6'>
-                  <div class='description-block border-right'>
-                    <h5 class='description-header'>". $ValuesArray[$p]. "</h5>
-                    <span class='description-text'>". $NamesArray[$p]. "</span>".
-                  "</div>".
-                  "</div>";
-              }
-              ?>
-            </div>
+            @if(count($ValuesArray) > 0)
+              <div class="barChart1">
+                <canvas id="barChart1"></canvas>
+              </div>
             @else 
               <div class="alert alert-warning alert-dismissible">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>

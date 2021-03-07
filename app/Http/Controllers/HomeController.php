@@ -66,9 +66,15 @@ class HomeController extends Controller
         $YesterdayBestSeller = $YesterdayBestSellerID != null ? Product::find($YesterdayBestSellerID->id_product)->product_name : "N/A";
         
         //2. NUMBER OF PRODUCTS SOLD TODAY
-        
-        $SalesToday = SalesD::whereDate('date_order', '=', $dateQuery)->sum('total');
-        $SalesYesterday = SalesD::whereDate('date_order', '=', $yesterday)->sum('total');
+        $activeFlag = 1;
+        $SalesToday = SalesD::whereDate('date_order', $dateQuery)
+                        ->whereHas('sale', function ($salesH) use ($activeFlag) {
+                            $salesH->where('active', $activeFlag);
+                        })->sum('total');
+        $SalesYesterday = SalesD::whereDate('date_order', $yesterday)
+                        ->whereHas('sale', function ($salesH) use ($activeFlag) {
+                            $salesH->where('active', $activeFlag);
+                        })->sum('total');;
 
         //3. NET PROFIT TODAY 
         $RevenueToday = SalesH::where('active', 1)->whereDate('date', '=', $dateQuery)->sum('total');
@@ -502,8 +508,8 @@ class HomeController extends Controller
         $ProductsSold = 0;
         $FinalSalesRecord = [];
 
-        $Sales = SalesH::whereDate('date', '=', $dateQuery)->get();
-        $content = Content::first();
+        $Sales = SalesH::where('active', 1)
+                        ->whereDate('date', '=', $dateQuery)->get();
 
         for($x=0; $x<count($Sales); $x++)
         {
@@ -589,10 +595,15 @@ class HomeController extends Controller
 
     public function Calendar()
     {
+        $activeFlag=1;
+
         $Sales = SalesH::select(DB::raw('date'), DB::raw('SUM(total) as total'))->where('active', 1)->groupBy('date')->get();
         $Purchase = PurchaseH::select(DB::raw('date'), DB::raw('SUM(total) as total'))->where('active', 1)->groupBy('date')->get();
-        $Orders = SalesH::select(DB::raw('DATE(date) as date'), DB::raw('count(*) as total'))->where('active', 1)->groupBy('date')->get();
-           
+        $Orders = SalesD::select(DB::raw('DATE(date_order) as date'), DB::raw('count(*) as total'))
+                        ->whereHas('sale', function ($salesH) use ($activeFlag) {
+                            $salesH->where('active', $activeFlag);
+                        })->groupBy('date')->get();
+        
         return view('/calendar', compact('Sales', 'Purchase', 'Orders'));
     }
 

@@ -8,8 +8,17 @@ BUGS:
 To be Added: 
 
 - Add option for products to be excluded in Sales report
+- Net Profit in calendar
 
 ==================================================================================================================
+
+SYSTEM CHANGES:
+
+- Added Active sales condtion in querying count for number of sales in a selected date in Operations Summary Report in home page / dashboard
+- Changed some texts in salesSummary page
+- Fixed misplaced data cells in Monthly Record
+- Added Addons option in update Sales Order
+- Removed redundant HTML elements in dashboard
 
 SYSTEM CHANGES: 
 
